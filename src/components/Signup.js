@@ -1,62 +1,39 @@
 import React from 'react';
 import fire from '../fire'
-import firebase, { auth } from 'firebase'
+
 export default class Login extends React.Component {
   state = {
     userInfo: []
   }
 
   // handles user registration
-  handleSignup() {
-  }
+  handleSignup = (e) => {
+    e.preventDefault()
+    let userEmail = e.target[0].value
+    let password = e.target[1].value
+    console.log(userEmail)
+    console.log(password)
 
-  display() {
-    return console.log('test')
+    fire.auth().createUserWithEmailAndPassword(userEmail, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    })
   }
-
-  // // creates dummy users
-  // createUsers() {
-  //   let db = fire.database()
-  //   // Create user-details table
-  //   let ref = db.ref('users')
-  //   // let usersRef = ref.child('details')
-  //   ref.set({
-  //     user1: {
-  //       id: 0,
-  //       username: 'username1',
-  //       password: 'password1'
-  //     },
-  //     user2: {
-  //       id: 1,
-  //       username: 'username2',
-  //       password: 'password2'
-  //     },
-  //     user3: {
-  //       id: 3,
-  //       username: 'username3',
-  //       password: 'password3'
-  //     }
-  //   })
-  // }
 
   render() {
     
-    // // Creates mock users
-    // this.createUsers()
     return (
       <>
         <form onSubmit={this.handleSignup}>
-        <label>
           Email:
-          <input type="text" name="email" />
-        </label>
+          <input type="email" name="email" onChange={(e) => console.log(e.target.value)}/>
         <br />
-        <label>
           Password:
-          <input type="text" name="password" />
-        </label>
+          <input type="text" name="password" onChange={(e) => console.log(e.target.value)}/>
         <br />
-        <input type="submit" value="Submit" onClick={this.display}/>
+        <button type="submit" onClick={this.display}>Submit</button>
         </form>
       </>
     )
