@@ -1,41 +1,42 @@
 import React from 'react';
 import fire from '../fire'
 
-export default class Login extends React.Component {
-  state = {
-    userInfo: []
-  }
+export default function Signup() {
 
   // handles user registration
-  handleSignup = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault()
     let userEmail = e.target[0].value
     let password = e.target[1].value
     console.log(userEmail)
     console.log(password)
 
-    fire.auth().createUserWithEmailAndPassword(userEmail, password).catch(function(error) {
-      // Handle Errors here.
+    // Create user account
+    fire.auth().createUserWithEmailAndPassword(userEmail, password).catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      // ...
     })
+
+    fire.auth().signInWithEmailAndPassword(userEmail, password).catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    })
+    
   }
 
-  render() {
     
     return (
       <>
-        <form onSubmit={this.handleSignup}>
+        <form onSubmit={handleSignup}>
           Email:
           <input type="email" name="email" onChange={(e) => console.log(e.target.value)}/>
         <br />
           Password:
-          <input type="text" name="password" onChange={(e) => console.log(e.target.value)}/>
+          <input type="password" name="password" onChange={(e) => console.log(e.target.value)}/>
         <br />
-        <button type="submit" onClick={this.display}>Submit</button>
+        <button type="submit">Submit</button>
         </form>
       </>
     )
-  }
+  
 }

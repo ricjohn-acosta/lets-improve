@@ -1,6 +1,12 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
+import fire from '../fire'
+import Signup from './Signup'
+
 const Home = (props) => {
+  const logout = () => {
+    fire.auth().signOut()
+  }
   return(
     <div>
       <li>
@@ -12,6 +18,7 @@ const Home = (props) => {
       <li>
         <Link to="/login">Login</Link>
       </li>
+      <button onClick={logout}>logout</button>
     </div>
   )
 }
