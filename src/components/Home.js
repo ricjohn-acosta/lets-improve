@@ -3,12 +3,24 @@ import { Link, Route } from "react-router-dom";
 import fire from '../fire'
 import Signup from './Signup'
 
-const Home = (props) => {
+// REDUX
+import { connect } from 'react-redux'
+import { signoutUser } from '../actions/actions'
+
+const Home = () => {
   const logout = () => {
     fire.auth().signOut()
   }
+
+  const displayUser = () => {
+    let user = fire.auth().currentUser
+    if (user != null) {
+      return user.displayName
+    }
+  }
   return(
     <div>
+      {displayUser()}
       <li>
         <Link to="/">Home</Link>
       </li>
@@ -23,4 +35,10 @@ const Home = (props) => {
   )
 }
 
-export default Home
+function mapStateToProps (state) {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps)(Home)
