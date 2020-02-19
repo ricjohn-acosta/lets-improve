@@ -1,46 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import fire from "./fire";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+// React-router
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-// Import components
-import Signup from './components/Signup'
-import Login from './components/Login'
+// Components
+import Home from "./components/Home";
+import Signup from "./components/Signup";
 
-export default class App extends React.Component {
-  
-  
-  
+// Redux
+import { connect } from "react-redux";
+
+class App extends React.Component {
+  // TODO: PUT USER IN GLOBAL STATE
+  // state = {
+  //   user: {}
+  // }
+
+  // componentDidMount = () => {
+  //   this.authListener()
+  // }
+
+  // // HANDLE SET STATES IN REDUCER
+  // authListener = () => {
+  //   fire.auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       this.setState({user})
+  //     } else {
+  //       this.setState({user:null})
+  //     }
+  //   })
+
+  //   this.props.dispatch(authUser())
+  // }
+
   render() {
     return (
-      // I want this to be 
+      // I want this to be
       <>
-      {/* <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/signup">Signup</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-
-
-      <Route exact path="/signup" component={Signup}/>  */}
-
-      {/* Routes */}
-      <Route exact path="/" component={Signup}/>
-      <Route exact path="/" component={Signup}/>
-
+        {this.props.user ? <Home /> : <Signup />}
+        <Route path="/signup" component={Signup} />
       </>
-    )
+    );
   }
-
 }
 
+function mapStateToProps(state) {
+  return {
+    user: state.authStatus
+  };
+}
+
+export default connect(mapStateToProps)(App);
