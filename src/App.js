@@ -28,7 +28,7 @@ export default class App extends React.Component {
       </li>
 
 
-      <Route path="/signup" component={Signup}/> 
+      <Route exact path="/signup" component={Signup}/> 
       </>
     )
   }
