@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Signup from './components/Signup'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,6 +9,9 @@ import {
   Link
 } from "react-router-dom";
 
+// Import components
+import Signup from './components/Signup'
+import Login from './components/Login'
 
 export default class App extends React.Component {
   
@@ -16,8 +19,9 @@ export default class App extends React.Component {
   
   render() {
     return (
+      // I want this to be 
       <>
-      <li>
+      {/* <li>
         <Link to="/">Home</Link>
       </li>
       <li>
@@ -28,7 +32,12 @@ export default class App extends React.Component {
       </li>
 
 
-      <Route exact path="/signup" component={Signup}/> 
+      <Route exact path="/signup" component={Signup}/>  */}
+
+      {/* Routes */}
+      <Route exact path="/" component={Signup}/>
+      <Route exact path="/" component={Signup}/>
+
       </>
     )
   }
