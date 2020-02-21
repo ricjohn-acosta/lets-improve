@@ -5,9 +5,9 @@ const initialState = {
   user: {}
 };
 
-export default function test(state = initialState, action) {
+export default function signinReducer(state = initialState, action) {
   if (action.type === SIGNUP_SUCCESS) {
-    return { ...state, authStatus: action.authenticated, user: action.user};
+    return { ...state, authStatus: action.authStatus, user: action.user};
   } else {
     return state
   }

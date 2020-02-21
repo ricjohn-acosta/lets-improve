@@ -14,23 +14,7 @@ class Signup extends React.Component {
     console.log(username);
 
     // Create user
-    this.props.registerUser(userEmail, password)
-    
-    // // Create user account
-    // fire.auth().createUserWithEmailAndPassword(userEmail, password)
-    //   .then((result) => {
-    //     return result.user.updateProfile({
-    //       displayName: username
-    //     })
-    //   }).catch(error => {
-    //     var errorCode = error.code
-    //     var errorMessage = error.message
-    //   })
-
-    // fire.auth().signInWithEmailAndPassword(userEmail, password).catch((error) => {
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    // })
+    this.props.registerUser(userEmail, password, username);
   };
 
   render() {
@@ -67,7 +51,7 @@ class Signup extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerUser: (email, password) => dispatch(signup(email, password))
+    registerUser: (email, password, username) => dispatch(signup(email, password, username))
   };
 }
 

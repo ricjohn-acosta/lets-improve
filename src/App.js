@@ -14,23 +14,22 @@ import Signup from "./components/Signup";
 import { connect } from "react-redux";
 
 class App extends React.Component {
-
   render() {
     return (
       <>
-        {this.props.authenticated ? <Home /> : <Signup />}
-        <Route path="/signup" component={Signup} />
+        {console.log(this.props.authStatus)}
+        {this.props.authStatus ? <Home /> : <Signup />}
       </>
     );
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   console.log(state)
   return {
-    user: state.user,
-    authenticated: state.authenticated
+    user: state.signinReducer.user,
+    authStatus: state.signinReducer.authStatus
   };
-}
+};
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, null)(App);

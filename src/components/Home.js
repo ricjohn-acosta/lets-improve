@@ -6,7 +6,7 @@ import Signup from './Signup'
 // REDUX
 import { connect } from 'react-redux'
 
-const Home = () => {
+const Home = (props) => {
   // const logout = () => {
   //   fire.auth().signOut()
   // }
@@ -20,6 +20,7 @@ const Home = () => {
   return(
     <div>
       <li>
+        {console.log(props.user.displayName)}
         <Link to="/">Home</Link>
       </li>
       <li>
@@ -33,10 +34,10 @@ const Home = () => {
   )
 }
 
-function mapStateToProps (state) {
+const mapStateToProps = state => {
+  console.log(state)
   return {
-    user: state.user
-  }
-}
-
-export default connect()(Home)
+    user: state.signinReducer.user,
+  };
+};
+export default connect(mapStateToProps)(Home)
