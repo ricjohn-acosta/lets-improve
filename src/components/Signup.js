@@ -14,7 +14,8 @@ class Signup extends React.Component {
     console.log(username);
 
     // Create user
-    signup(userEmail, password);
+    this.props.registerUser(userEmail, password)
+    
     // // Create user account
     // fire.auth().createUserWithEmailAndPassword(userEmail, password)
     //   .then((result) => {
@@ -66,8 +67,8 @@ class Signup extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signup: (email, password) => dispatch(signup(email, password))
+    registerUser: (email, password) => dispatch(signup(email, password))
   };
 }
 
-export default connect(mapDispatchToProps)(Signup);
+export default connect(null, mapDispatchToProps)(Signup);

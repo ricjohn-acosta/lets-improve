@@ -12,32 +12,18 @@ import reduxThunk from "redux-thunk";
 import reducers from "./reducers";
 
 // ENHANCE STORE WITH FIREBASE
-import { ReactReduxFirebaseProvider, getFirebase } from "react-redux-firebase";
+import { reactReduxFirebase } from "react-redux-firebase";
 import fire from "./fire";
 
 // CREATE STORE
-// const createStoreWithFirebase = compose(reactReduxFirebase(fire))(createStore);
-// const store = createStoreWithFirebase(reducers,{},applyMiddleware(reduxThunk));
-
-const rrfConfig = { userProfile: "users" };
-const store = createStore(
-  reducers,
-  {authStatus: false},
-  applyMiddleware([reduxThunk.withExtraArgument(getFirebase)])
-);
-const rrfProps = {
-  fire,
-  config: rrfConfig,
-  dispatch: store.dispatch
-};
+const createStoreWithFirebase = compose(reactReduxFirebase(fire))(createStore);
+const store = createStoreWithFirebase(reducers,{},applyMiddleware(reduxThunk));
 
 ReactDOM.render(
   <Provider store={store}>
-    <ReactReduxFirebaseProvider {...rrfProps}>
       <Router>
         <App />
       </Router>
-    </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById("root")
 );

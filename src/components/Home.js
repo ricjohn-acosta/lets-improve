@@ -7,16 +7,16 @@ import Signup from './Signup'
 import { connect } from 'react-redux'
 
 const Home = () => {
-  const logout = () => {
-    fire.auth().signOut()
-  }
+  // const logout = () => {
+  //   fire.auth().signOut()
+  // }
 
-  const displayUser = () => {
-    let user = fire.auth().currentUser
-    if (user != null) {
-      return user.displayName
-    }
-  }
+  // const displayUser = () => {
+  //   let user = fire.auth().currentUser
+  //   if (user != null) {
+  //     return user.displayName
+  //   }
+  // }
   return(
     <div>
       <li>
@@ -28,7 +28,7 @@ const Home = () => {
       <li>
         <Link to="/login">Login</Link>
       </li>
-      <button onClick={logout}>logout</button>
+      <button>logout</button>
     </div>
   )
 }
@@ -39,4 +39,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect()(Home)

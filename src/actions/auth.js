@@ -9,11 +9,17 @@ export function signup(email, password) {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(data => {
+        fire.auth().signInWithEmailAndPassword(email,password)
+      })
+      .then(data => {
         fire.auth().onAuthStateChanged(user => {
-          if (user) {
+          console.log(user)
+          if (user !== null) {
             dispatch({
               type: SIGNUP_SUCCESS,
-              payload: true
+              // payload: true
+              authenticated: true,
+              user: user
             });
           }
         });

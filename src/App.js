@@ -14,33 +14,11 @@ import Signup from "./components/Signup";
 import { connect } from "react-redux";
 
 class App extends React.Component {
-  // TODO: PUT USER IN GLOBAL STATE
-  // state = {
-  //   user: {}
-  // }
-
-  // componentDidMount = () => {
-  //   this.authListener()
-  // }
-
-  // // HANDLE SET STATES IN REDUCER
-  // authListener = () => {
-  //   fire.auth().onAuthStateChanged(user => {
-  //     if (user) {
-  //       this.setState({user})
-  //     } else {
-  //       this.setState({user:null})
-  //     }
-  //   })
-
-  //   this.props.dispatch(authUser())
-  // }
 
   render() {
     return (
-      // I want this to be
       <>
-        {this.props.user ? <Home /> : <Signup />}
+        {this.props.authenticated ? <Home /> : <Signup />}
         <Route path="/signup" component={Signup} />
       </>
     );
@@ -48,8 +26,10 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state)
   return {
-    user: state.authStatus
+    user: state.user,
+    authenticated: state.authenticated
   };
 }
 
