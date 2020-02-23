@@ -1,41 +1,58 @@
-import React from 'react';
-import fire from '../fire'
+import React from "react";
+import { signup } from "../actions/auth";
+import { connect } from "react-redux";
 
-export default class Login extends React.Component {
-  state = {
-    userInfo: []
-  }
-
+class Signup extends React.Component {
   // handles user registration
-  handleSignup = (e) => {
-    e.preventDefault()
-    let userEmail = e.target[0].value
-    let password = e.target[1].value
-    console.log(userEmail)
-    console.log(password)
+  handleSignup = e => {
+    e.preventDefault();
+    let userEmail = e.target[0].value;
+    let password = e.target[1].value;
+    let username = e.target[2].value;
+    console.log(userEmail);
+    console.log(password);
+    console.log(username);
 
-    fire.auth().createUserWithEmailAndPassword(userEmail, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-    })
-  }
+    // Create user
+    this.props.registerUser(userEmail, password, username);
+  };
 
   render() {
-    
     return (
       <>
         <form onSubmit={this.handleSignup}>
           Email:
-          <input type="email" name="email" onChange={(e) => console.log(e.target.value)}/>
-        <br />
+          <input
+            type="email"
+            name="email"
+            onChange={e => console.log(e.target.value)}
+          />
+          <br />
           Password:
-          <input type="text" name="password" onChange={(e) => console.log(e.target.value)}/>
-        <br />
-        <button type="submit" onClick={this.display}>Submit</button>
+          <input
+            type="password"
+            name="password"
+            onChange={e => console.log(e.target.value)}
+          />
+          <br />
+          Username:
+          <input
+            type="text"
+            name="username"
+            onChange={e => console.log(e.target.value)}
+          />
+          <br />
+          <button type="submit">Submit</button>
         </form>
       </>
-    )
+    );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    registerUser: (email, password, username) => dispatch(signup(email, password, username))
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Signup);

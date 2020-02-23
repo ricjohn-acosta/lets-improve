@@ -1,28 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import React from "react";
+import "./App.css";
+import { fireConfig } from "./fire";
 
-import Home from './components/Home'
-import Signup from './components/Signup'
+// React-router
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-export default class App extends React.Component {
-  
-  
-  
+// Components
+import Home from "./components/Home";
+import Signup from "./components/Signup";
+
+// Redux
+import { connect } from "react-redux";
+
+class App extends React.Component {
+  state = {
+    currentUser: {}
+  };
+
+  componentDidMount = () => {
+    fireConfig.auth().onAuthStateChanged(currentUser => {
+      console.log(currentUser)
+      if (currentUser) {
+        this.setState({ currentUser });
+      } else {
+        this.setState({ currentUser: null });
+      }
+    });
+  };
   render() {
     return (
       <>
-      <Route exact path="/" component={Home}/> 
-      <Route path="/signup" component={Signup}/> 
+        {console.log(this.props.user)}
+        {this.state.currentUser ? <Home /> : <Signup />}
+        <Route path="/signup" component={Signup} />
       </>
-    )
+    );
   }
-
 }
 
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    user: state.authReducer.user,
+    authStatus: state.authReducer.authStatus
+  };
+};
+
+export default connect(mapStateToProps, null)(App);
