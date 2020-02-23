@@ -13,17 +13,23 @@ import reducers from "./reducers";
 
 // ENHANCE STORE WITH FIREBASE
 import { reactReduxFirebase } from "react-redux-firebase";
-import fire from "./fire";
+import { fireConfig } from "./fire";
 
 // CREATE STORE
-const createStoreWithFirebase = compose(reactReduxFirebase(fire))(createStore);
-const store = createStoreWithFirebase(reducers,{},applyMiddleware(reduxThunk));
+const createStoreWithFirebase = compose(reactReduxFirebase(fireConfig))(
+  createStore
+);
+const store = createStoreWithFirebase(
+  reducers,
+  {},
+  applyMiddleware(reduxThunk)
+);
 
 ReactDOM.render(
   <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
+    <Router>
+      <App />
+    </Router>
   </Provider>,
   document.getElementById("root")
 );

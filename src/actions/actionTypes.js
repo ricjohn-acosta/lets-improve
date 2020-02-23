@@ -1,10 +1,8 @@
-// Export actiontypes
-
 // SIGNUP ACTION TYPES
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
-export const SIGNOUT_SUCCESS = "SIGNOUT_SUCCESS"
+export const SIGNOUT_SUCCESS = "SIGNOUT_SUCCESS";
 
-// // SIGNIN ACTION TYPES
-// export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
-// export const SIGNIN_ERROR = "SIGNIN_ERROR";
+// USER AUTH ACTION TYPES
+export const AUTH_USER = "AUTH_USER";
+export const AUTH_ERROR = "AUTH_ERROR";

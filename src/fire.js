@@ -1,4 +1,5 @@
-import firebase from 'firebase'
+import firebase from "firebase";
+import "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD3crIc4YzqQs5Vzr2F5DN7TzkTx00hd4s",
@@ -9,7 +10,7 @@ const firebaseConfig = {
   messagingSenderId: "396538697524",
   appId: "1:396538697524:web:5b5da73b4b730eb5837761",
   measurementId: "G-JNDQPS9W79"
-}
-var fire = firebase.initializeApp(firebaseConfig)
+};
+export const fireConfig = firebase.initializeApp(firebaseConfig);
+export const persistence = firebase.auth.Auth.Persistence.LOCAL;
 
-export default fire

@@ -26,8 +26,8 @@ class Home extends React.Component {
   render() {
     return (
       <div>
+        {console.log(this.props.user)}
         <li>
-          {console.log(this.props.user.displayName)}
           <Link to="/">Home</Link>
         </li>
         <li>

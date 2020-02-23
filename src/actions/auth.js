@@ -1,42 +1,60 @@
 // Import action types from actionTypes.js
 import { SIGNUP_SUCCESS, SIGNUP_ERROR, SIGNOUT_SUCCESS } from "./actionTypes";
-import fire from "../fire";
+import { fireConfig } from "../fire";
+import { persistence } from "../fire";
 
-// Signup with firebase api
+// Create new user account
 export function signup(email, password, username) {
   return dispatch => {
-    fire
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+    // Create user
+    fireConfig.auth().createUserWithEmailAndPassword(email, password)
       .then(data => {
-        fire.auth().signInWithEmailAndPassword(email, password);
-      })
-      .then(data => {
-        let currUser = fire.auth().currentUser;
-        currUser.updateProfile({ displayName: username });
-      })
-      .then(data => {
-        fire.auth().onAuthStateChanged(user => {
-          if (user) {
+
+        // Change persistence
+        fireConfig.auth().setPersistence(persistence).then(() => {
+
+          // Sign in user and change current user's display name
+          return fireConfig.auth().signInWithEmailAndPassword(email, password)
+          .then(data => {
+            let currUser = fireConfig.auth().currentUser;
+            currUser.updateProfile({ displayName: username });
             dispatch({
-              type: SIGNUP_SUCCESS,
-              // payload: true
-              authStatus: true,
-              user: { user }
+              type: SIGNUP_ERROR,
+              authStatus: false,
+              user: { user: null }
             });
-          }
-        });
+          })
+
+          // // Change auth state to logged in
+          // .then(data => {
+          //   fireConfig.auth().onAuthStateChanged(user => {
+          //     if (user) {
+          //       dispatch({
+          //         type: SIGNUP_SUCCESS,
+          //         authStatus: true,
+          //         user
+          //       });
+          //     } else {
+          //       dispatch({
+          //         type: SIGNUP_ERROR,
+          //         authStatus: false,
+          //         user: { user: null}
+          //       });
+          //     }
+          //   });
+          // });
+        })
       });
   };
 }
 
 export function signout() {
   return dispatch => {
-    fire
+    fireConfig
       .auth()
       .signOut()
       .then(data => {
-        fire.auth().onAuthStateChanged(user => {
+        fireConfig.auth().onAuthStateChanged(user => {
           if (user === null) {
             dispatch({
               type: SIGNOUT_SUCCESS,
