@@ -1,12 +1,13 @@
-import React from 'react';
+import React from "react";
 import { Link, Route } from "react-router-dom";
-import fire from '../fire'
-import Signup from './Signup'
+import fire from "../fire";
+import Signup from "./Signup";
 
 // REDUX
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
+import { signout } from "../actions/auth";
 
-const Home = (props) => {
+class Home extends React.Component {
   // const logout = () => {
   //   fire.auth().signOut()
   // }
@@ -17,27 +18,40 @@ const Home = (props) => {
   //     return user.displayName
   //   }
   // }
-  return(
-    <div>
-      <li>
-        {console.log(props.user.displayName)}
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/signup">Signup</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <button>logout</button>
-    </div>
-  )
+
+  logoutHandler = () => {
+    this.props.signoutUser();
+  };
+
+  render() {
+    return (
+      <div>
+        <li>
+          {console.log(this.props.user.displayName)}
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/signup">Signup</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+        <button onClick={this.logoutHandler}>logout</button>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
-  console.log(state)
+  console.log(state);
   return {
-    user: state.signinReducer.user,
+    user: state.authReducer.user
   };
 };
-export default connect(mapStateToProps)(Home)
+
+function mapDispatchToProps(dispatch) {
+  return {
+    signoutUser: () => dispatch(signout())
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

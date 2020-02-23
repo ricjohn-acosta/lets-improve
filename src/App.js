@@ -27,8 +27,8 @@ class App extends React.Component {
 const mapStateToProps = state => {
   console.log(state)
   return {
-    user: state.signinReducer.user,
-    authStatus: state.signinReducer.authStatus
+    user: state.authReducer.user,
+    authStatus: state.authReducer.authStatus
   };
 };
 
