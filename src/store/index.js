@@ -4,8 +4,9 @@ import reduxThunk from "redux-thunk";
 import reducers from "./reducers";
 
 // ENHANCE STORE WITH FIREBASE
-import { reactReduxFirebase } from "react-redux-firebase";
-import { fireConfig } from "./fire";
+import { reactReduxFirebase, getFirebase } from "react-redux-firebase";
+import { reduxFirestore, getFirestore } from "redux-firestore";
+import { firebase } from "./fire";
 
 // /*WORKING SOLUTION*/
 // // CREATE STORE
@@ -27,17 +28,34 @@ import { fireConfig } from "./fire";
  * REDUX DEV TOOL
  **/
 
+// react-redux-firebase config
+const rrfConfig = {
+  userProfile: "users",
+  useFirestoreForProfile: true,
+  attachAuthIsReady: true
+};
+
 // Middlewares
-const middlewareEnhancer = applyMiddleware(reduxThunk.withExtraArgument{getFirebase,});
+const middlewareEnhancer = applyMiddleware(
+  reduxThunk.withExtraArgument({ getFirebase, getFirestore })
+);
+
 // Store enhancers
-const storeEnhancer = reactReduxFirebase(fireConfig);
+const rrfEnhancer = reactReduxFirebase(firebase, rrfConfig);
+const reduxFirestoreEnhancer = reduxFirestore(firebase);
+
 // Redux dev tools
-const reduxDevTool = window.__REDUX_DEVTOOLS_EXTENSION__
+const reduxDevTool = window.__REDUX_DEVTOOLS_EXTENSION__;
 
 // Compose all enhancers.
-const composedEnhancers = compose(middlewareEnhancer, storeEnhancer, reduxDevTool);
+const composedEnhancers = compose(
+  middlewareEnhancer,
+  rrfEnhancer,
+  reduxFirestoreEnhancer,
+  reduxDevTool
+);
 
 // Finally, create store.
-const store = createStore(reducers);
+const store = createStore(reducers, composedEnhancers);
 
 export default store;
