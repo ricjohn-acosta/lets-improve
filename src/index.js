@@ -3,27 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import store from "./store/index"
 import { BrowserRouter as Router } from "react-router-dom";
-
-// SETUP REDUX SSTORE
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux";
-import reduxThunk from "redux-thunk";
-import reducers from "./reducers";
-
-// ENHANCE STORE WITH FIREBASE
-import { reactReduxFirebase } from "react-redux-firebase";
-import { fireConfig } from "./fire";
-
-// CREATE STORE
-const createStoreWithFirebase = compose(reactReduxFirebase(fireConfig))(
-  createStore
-);
-const store = createStoreWithFirebase(
-  reducers,
-  {},
-  applyMiddleware(reduxThunk)
-);
 
 ReactDOM.render(
   <Provider store={store}>
