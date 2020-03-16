@@ -33,18 +33,18 @@ class App extends React.Component {
       <>
         {/* {console.log(this.props.user)} */}
         {/* {this.state.currentUser ? <Home /> : <Signup />} */}
-        <Home />
+        <Signup />
       </>
     );
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state);
-  return {
-    user: state.authReducer.user,
-    authStatus: state.authReducer.authStatus
-  };
-};
+// const mapStateToProps = state => {
+//   console.log(state);
+//   return {
+//     user: state.authReducer.user,
+//     authStatus: state.authReducer.authStatus
+//   };
+// };
 
-export default connect(mapStateToProps, null)(App);
+export default (App);

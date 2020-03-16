@@ -3,7 +3,7 @@ import * as actions from "./actionTypes";
 
 // TODO: CREATE SIGNUP ACTION
 // Function that handles signup action - Returns an anonymous function
-export function signup(userInfo) {
+export function signup(email, password) {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     dispatch({ type: actions.AUTH_START });
     const firebase = getFirebase();
@@ -11,16 +11,19 @@ export function signup(userInfo) {
 
     firebase
       .auth()
-      .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+      .createUserWithEmailAndPassword(email, password)
       .then(res => {
-        const user = firebase.auth().currentUser;
-        user.sendEmailVerification().then(() => {
+        const currentUser = firebase.auth().currentUser;
+        currentUser.sendEmailVerification().then(() => {
           console.log("VERIFICATION EMAIL SENT");
         });
         firestore
           .collection("users")
           .doc(res.user.uid)
-          .set({ firstName: userInfo.firstName, lastName: userInfo.lastName });
+          .set({ firstName: email, lastName: password })
+          .then(() => {
+            console.log("USER ADDED TO FIRESTORE")
+          })
         dispatch({ type: actions.AUTH_SUCCESS });
       })
       .catch(err => {

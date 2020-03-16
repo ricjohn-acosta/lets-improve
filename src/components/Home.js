@@ -42,16 +42,16 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state);
-  return {
-    user: state.authReducer.user
-  };
-};
+// const mapStateToProps = state => {
+//   console.log(state);
+//   return {
+//     user: state.authReducer.user
+//   };
+// };
 
 // function mapDispatchToProps(dispatch) {
 //   return {
 //     signoutUser: () => dispatch(signout())
 //   };
 // }
-export default connect(mapStateToProps)(Home);
+export default (Home);

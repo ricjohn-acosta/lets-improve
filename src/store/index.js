@@ -50,7 +50,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(
   rootReducer,
   composeEnhancers(
-    compose(middlewareEnhancer, rrfEnhancer, reduxFirestoreEnhancer)
+    middlewareEnhancer, rrfEnhancer, reduxFirestoreEnhancer
   )
 );
 
