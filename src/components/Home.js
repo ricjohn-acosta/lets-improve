@@ -5,7 +5,7 @@ import Signup from "./Signup";
 
 // REDUX
 import { connect } from "react-redux";
-import { signout } from "../actions/auth";
+// import { signout } from "../actions/auth";
 
 class Home extends React.Component {
   // const logout = () => {
@@ -49,9 +49,9 @@ const mapStateToProps = state => {
   };
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    signoutUser: () => dispatch(signout())
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     signoutUser: () => dispatch(signout())
+//   };
+// }
+export default connect(mapStateToProps)(Home);

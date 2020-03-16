@@ -8,13 +8,11 @@ class Signup extends React.Component {
     e.preventDefault();
     let userEmail = e.target[0].value;
     let password = e.target[1].value;
-    let username = e.target[2].value;
     console.log(userEmail);
     console.log(password);
-    console.log(username);
 
     // Create user
-    this.props.registerUser(userEmail, password, username);
+    this.props.signup(userEmail, password);
   };
 
   render() {
@@ -35,13 +33,13 @@ class Signup extends React.Component {
             onChange={e => console.log(e.target.value)}
           />
           <br />
-          Username:
+          {/* Username:
           <input
             type="text"
             name="username"
             onChange={e => console.log(e.target.value)}
           />
-          <br />
+          <br /> */}
           <button type="submit">Submit</button>
         </form>
       </>
@@ -51,7 +49,7 @@ class Signup extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerUser: (email, password, username) => dispatch(signup(email, password, username))
+    signup: (email, password) => dispatch(signup(email, password))
   };
 }
 

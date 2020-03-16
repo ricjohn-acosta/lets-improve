@@ -1,12 +1,12 @@
 // SETUP REDUX SSTORE
 import { createStore, applyMiddleware, compose } from "redux";
 import reduxThunk from "redux-thunk";
-import reducers from "./reducers";
+import rootReducer from "../reducers";
 
 // ENHANCE STORE WITH FIREBASE
 import { reactReduxFirebase, getFirebase } from "react-redux-firebase";
 import { reduxFirestore, getFirestore } from "redux-firestore";
-import { firebase } from "./fire";
+import firebase from "../fire";
 
 // /*WORKING SOLUTION*/
 // // CREATE STORE
@@ -44,18 +44,14 @@ const middlewareEnhancer = applyMiddleware(
 const rrfEnhancer = reactReduxFirebase(firebase, rrfConfig);
 const reduxFirestoreEnhancer = reduxFirestore(firebase);
 
-// Redux dev tools
-const reduxDevTool = window.__REDUX_DEVTOOLS_EXTENSION__;
-
-// Compose all enhancers.
-const composedEnhancers = compose(
-  middlewareEnhancer,
-  rrfEnhancer,
-  reduxFirestoreEnhancer,
-  reduxDevTool
-);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 // Finally, create store.
-const store = createStore(reducers, composedEnhancers);
+const store = createStore(
+  rootReducer,
+  composeEnhancers(
+    compose(middlewareEnhancer, rrfEnhancer, reduxFirestoreEnhancer)
+  )
+);
 
 export default store;

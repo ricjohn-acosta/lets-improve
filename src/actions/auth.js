@@ -1,10 +1,34 @@
 // Import action types from actionTypes.js
-import { AUTH_START, AUTH_END, AUTH_SUCCESS, AUTH_FAIL } from "./actionTypes";
-import { fireConfig } from "../fire";
-import { persistence } from "../fire";
+import * as actions from "./actionTypes";
 
 // TODO: CREATE SIGNUP ACTION
+// Function that handles signup action - Returns an anonymous function
+export function signup(userInfo) {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    dispatch({ type: actions.AUTH_START });
+    const firebase = getFirebase();
+    const firestore = getFirestore();
 
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+      .then(res => {
+        const user = firebase.auth().currentUser;
+        user.sendEmailVerification().then(() => {
+          console.log("VERIFICATION EMAIL SENT");
+        });
+        firestore
+          .collection("users")
+          .doc(res.user.uid)
+          .set({ firstName: userInfo.firstName, lastName: userInfo.lastName });
+        dispatch({ type: actions.AUTH_SUCCESS });
+      })
+      .catch(err => {
+        dispatch({ type: actions.AUTH_FAIL, payload: err.message });
+      });
+    dispatch({ type: actions.AUTH_END });
+  };
+}
 
 // WORKING SOLUTION
 // // Create new user account
