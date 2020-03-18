@@ -22,14 +22,29 @@ export function signup(email, password) {
           .doc(res.user.uid)
           .set({ firstName: email, lastName: password })
           .then(() => {
-            console.log("USER ADDED TO FIRESTORE")
-          })
+            console.log("USER ADDED TO FIRESTORE");
+          });
         dispatch({ type: actions.AUTH_SUCCESS });
       })
       .catch(err => {
         dispatch({ type: actions.AUTH_FAIL, payload: err.message });
       });
     dispatch({ type: actions.AUTH_END });
+  };
+}
+
+export function signOut() {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log("USER SIGNED OUT");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 }
 

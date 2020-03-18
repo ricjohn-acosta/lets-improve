@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.css";
-import { firebase } from "./fire";
 
 // React-router
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router";
 
 // Components
 import Home from "./components/Home";
@@ -12,39 +11,32 @@ import Signup from "./components/Signup";
 // Redux
 import { connect } from "react-redux";
 
-class App extends React.Component {
-  // state = {
-  //   currentUser: {}
-  // };
+const App = ({ loggedIn }) => {
+  let routes;
 
-  // componentDidMount = () => {
-  //   fireConfig.auth().onAuthStateChanged(currentUser => {
-  //     console.log(currentUser)
-  //     if (currentUser) {
-  //       this.setState({ currentUser });
-  //     } else {
-  //       this.setState({ currentUser: null });
-  //     }
-  //   });
-  // };
-  
-  render() {
-    return (
-      <>
-        {/* {console.log(this.props.user)} */}
-        {/* {this.state.currentUser ? <Home /> : <Signup />} */}
-        <Signup />
-      </>
+  if (loggedIn) {
+    routes = (
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Redirect to = "/" />
+      </Switch>
+    );
+  } else if (!loggedIn) {
+    routes = (
+      <Switch>
+        <Route exact path="/signup" component={Signup} />
+        <Redirect to = "/signup" />
+      </Switch>
     );
   }
-}
 
-// const mapStateToProps = state => {
-//   console.log(state);
-//   return {
-//     user: state.authReducer.user,
-//     authStatus: state.authReducer.authStatus
-//   };
-// };
+  return (routes);
+};
 
-export default (App);
+const mapStateToProps = ({ firebase }) => {
+  return {
+    loggedIn: firebase.auth.uid
+  };
+};
+
+export default connect(mapStateToProps)(App);

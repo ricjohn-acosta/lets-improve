@@ -12,7 +12,7 @@ class Signup extends React.Component {
     console.log(password);
 
     // Create user
-    this.props.signup(userEmail, password);
+    this.props.signIn(userEmail, password);
   };
 
   render() {
@@ -49,7 +49,7 @@ class Signup extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signup: (email, password) => dispatch(signup(email, password))
+    signIn: (email, password) => dispatch(signup(email, password))
   };
 }
 
