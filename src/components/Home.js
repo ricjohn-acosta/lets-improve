@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 // REDUX
 import { connect } from "react-redux";
-import * as actions from "../actions/auth";
+import * as actions from "../store/actions/auth"
 
 const Home = ({ signout }) => {
 
