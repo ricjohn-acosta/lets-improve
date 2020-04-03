@@ -1,5 +1,5 @@
 import React from "react";
-import { signup } from "../store/actions/auth"
+import { signUp } from "../store/actions/auth"
 import { connect } from "react-redux";
 
 
@@ -91,7 +91,7 @@ const Signup = ({signUp}) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signUp: (email, password) => dispatch(signup(email, password))
+    signUp: (email, password) => dispatch(signUp(email, password))
   };
 }
 
