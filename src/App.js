@@ -13,8 +13,7 @@ import Login from "./components/Login";
 // Redux
 import { connect } from "react-redux";
 
-
-const App = ({ loggedIn, emailVerified}) => {
+const App = ({ loggedIn, emailVerified }) => {
   let routes;
   if (loggedIn && !emailVerified) {
     routes = (
@@ -26,16 +25,21 @@ const App = ({ loggedIn, emailVerified}) => {
   } else if (loggedIn && emailVerified) {
     routes = (
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
         <Redirect to="/" />
       </Switch>
     );
   } else {
     routes = (
       <Switch>
-        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
+        <Route
+          exact
+          path="/signup"
+          render={() => <Signup isLoggedIn={loggedIn} />}
+        />
         <Route exact path="/login" component={Login} />
-        <Redirect to="/signup" />
+        <Redirect to="/" />
       </Switch>
     );
   }

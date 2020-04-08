@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { logIn } from "../store/actions/auth";
 
-const Login = ({ logIn }) => {
+const Login = () => {
   function handleLogin(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
@@ -14,7 +14,6 @@ const Login = ({ logIn }) => {
   }
   return (
     <>
-      Login
       <form onSubmit={handleLogin}>
         Email:
         <input

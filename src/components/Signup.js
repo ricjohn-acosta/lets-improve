@@ -3,7 +3,7 @@ import { signUp } from "../store/actions/auth";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Signup = ({ signUp }) => {
+const Signup = ({ signUp, isLoggedIn }) => {
   function handleSignup(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
@@ -40,7 +40,7 @@ const Signup = ({ signUp }) => {
         <button type="submit">Signup</button>
       </form>
 
-      <Link to="/login">Login</Link>
+      {isLoggedIn ? null : <Link to="/login">Login</Link>}
     </>
   );
 };

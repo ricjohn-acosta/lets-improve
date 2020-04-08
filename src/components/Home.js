@@ -3,24 +3,16 @@ import { Link } from "react-router-dom";
 
 // REDUX
 import { connect } from "react-redux";
-import * as actions from "../store/actions/auth"
+import * as actions from "../store/actions/auth";
+import Signup from "../components/Signup";
 
-const Home = ({ signout }) => {
-
-
+const Home = ({ signout, isLoggedIn }) => {
   return (
-    <div>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/signup">Signup</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <button onClick={signout}>logout</button>
-    </div>
+    <>
+      Home
+      {!isLoggedIn ? <Signup /> : <button onClick={signout}>logout</button>}
+     
+    </>
   );
 };
 
