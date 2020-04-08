@@ -33,6 +33,25 @@ export function signUp(email, password) {
   };
 }
 
+export function logIn(email, password) {
+  return (dispatch, getState, { getFirebase }) => {
+    dispatch({ type: actions.AUTH_START });
+    const firebase = getFirebase();
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log("USER LOGGED IN ");
+        dispatch({ type: actions.AUTH_SUCCESS });
+      })
+      .catch(err => {
+        dispatch({ type: actions.AUTH_FAIL, payload: err.message });
+      });
+    dispatch({ type: actions.AUTH_END });
+  };
+}
+
 export function signOut() {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();

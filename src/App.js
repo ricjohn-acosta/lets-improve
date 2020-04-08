@@ -8,12 +8,13 @@ import { Route, Switch, Redirect } from "react-router";
 import Home from "./components/Home";
 import Signup from "./components/Signup";
 import VerifyEmail from "./components/VerifyEmail";
+import Login from "./components/Login";
 
 // Redux
 import { connect } from "react-redux";
 
 
-const App = ({ loggedIn, emailVerified, reloadUser}) => {
+const App = ({ loggedIn, emailVerified}) => {
   let routes;
   if (loggedIn && !emailVerified) {
     routes = (
@@ -33,6 +34,7 @@ const App = ({ loggedIn, emailVerified, reloadUser}) => {
     routes = (
       <Switch>
         <Route exact path="/signup" component={Signup} />
+        <Route exact path="/login" component={Login} />
         <Redirect to="/signup" />
       </Switch>
     );

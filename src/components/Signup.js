@@ -1,10 +1,9 @@
 import React from "react";
-import { signUp } from "../store/actions/auth"
+import { signUp } from "../store/actions/auth";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-
-const Signup = ({signUp}) => {
-
+const Signup = ({ signUp }) => {
   function handleSignup(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
@@ -17,77 +16,34 @@ const Signup = ({signUp}) => {
   return (
     <>
       <form onSubmit={handleSignup}>
-          Email:
-          <input
-            type="email"
-            name="email"
-            onChange={e => console.log(e.target.value)}
-          />
-          <br />
-          Password:
-          <input
-            type="password"
-            name="password"
-            onChange={e => console.log(e.target.value)}
-          />
-          <br />
-          {/* Username:
+        Email:
+        <input
+          type="email"
+          name="email"
+          onChange={e => console.log(e.target.value)}
+        />
+        <br />
+        Password:
+        <input
+          type="password"
+          name="password"
+          onChange={e => console.log(e.target.value)}
+        />
+        <br />
+        {/* Username:
           <input
             type="text"
             name="username"
             onChange={e => console.log(e.target.value)}
           />
           <br /> */}
-          <button type="submit">Submit</button>
-        </form>
+        <button type="submit">Signup</button>
+      </form>
+
+      <Link to="/login">Login</Link>
     </>
   );
 };
-
-// class Signup extends React.Component {
-//   // handles user registration
-//   handleSignup = e => {
-//     e.preventDefault();
-//     let userEmail = e.target[0].value;
-//     let password = e.target[1].value;
-//     console.log(userEmail);
-//     console.log(password);
-
-//     // Create user
-//     this.props.signIn(userEmail, password);
-//   };
-
-//   render() {
-//     return (
-//       <>
-//         <form onSubmit={this.handleSignup}>
-//           Email:
-//           <input
-//             type="email"
-//             name="email"
-//             onChange={e => console.log(e.target.value)}
-//           />
-//           <br />
-//           Password:
-//           <input
-//             type="password"
-//             name="password"
-//             onChange={e => console.log(e.target.value)}
-//           />
-//           <br />
-//           {/* Username:
-//           <input
-//             type="text"
-//             name="username"
-//             onChange={e => console.log(e.target.value)}
-//           />
-//           <br /> */}
-//           <button type="submit">Submit</button>
-//         </form>
-//       </>
-//     );
-//   }
-// }
 
 function mapDispatchToProps(dispatch) {
   return {
