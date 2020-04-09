@@ -1,49 +1,57 @@
 import React from "react";
 import "./App.css";
-import { fireConfig } from "./fire";
 
 // React-router
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router";
 
 // Components
 import Home from "./components/Home";
 import Signup from "./components/Signup";
+import VerifyEmail from "./components/VerifyEmail";
+import Login from "./components/Login";
 
 // Redux
 import { connect } from "react-redux";
 
-class App extends React.Component {
-  state = {
-    currentUser: {}
-  };
-
-  componentDidMount = () => {
-    fireConfig.auth().onAuthStateChanged(currentUser => {
-      console.log(currentUser)
-      if (currentUser) {
-        this.setState({ currentUser });
-      } else {
-        this.setState({ currentUser: null });
-      }
-    });
-  };
-  render() {
-    return (
-      <>
-        {console.log(this.props.user)}
-        {this.state.currentUser ? <Home /> : <Signup />}
-        <Route path="/signup" component={Signup} />
-      </>
+const App = ({ loggedIn, emailVerified }) => {
+  let routes;
+  if (loggedIn && !emailVerified) {
+    routes = (
+      <Switch>
+        <Route exact path="/verifyemail" component={VerifyEmail} />
+        <Redirect to="/verifyemail" />
+      </Switch>
+    );
+  } else if (loggedIn && emailVerified) {
+    routes = (
+      <Switch>
+        <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
+        <Redirect to="/" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
+        <Route
+          exact
+          path="/signup"
+          render={() => <Signup isLoggedIn={loggedIn} />}
+        />
+        <Route exact path="/login" component={Login} />
+        <Redirect to="/" />
+      </Switch>
     );
   }
-}
 
-const mapStateToProps = state => {
-  console.log(state);
+  return routes;
+};
+
+const mapStateToProps = ({ firebase }) => {
   return {
-    user: state.authReducer.user,
-    authStatus: state.authReducer.authStatus
+    loggedIn: firebase.auth.uid,
+    emailVerified: firebase.auth.emailVerified
   };
 };
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps)(App);
