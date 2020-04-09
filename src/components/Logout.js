@@ -1,14 +1,18 @@
 import React from "react";
-import { connect } from "react-redux";
 
-const Logout = () => {
+// STORE
+import { connect } from "react-redux";
+import * as actions from "../store/actions/auth";
+
+const Logout = ({ signout }) => {
   return (
-      <>
-      </>
-  )
+    <>
+      <button onClick={signout}>logout</button>
+    </>
+  );
 };
 
 const mapDispatchToProps = {
-    logout 
-}
+  signout: actions.signOut,
+};
 export default connect(null, mapDispatchToProps)(Logout);
