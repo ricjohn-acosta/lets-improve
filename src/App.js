@@ -9,38 +9,49 @@ import Home from "./components/Home";
 import Signup from "./components/Signup";
 import VerifyEmail from "./components/VerifyEmail";
 import Login from "./components/Login";
+import Navbar from "./components/Navbar";
 
 // Redux
 import { connect } from "react-redux";
 
 const App = ({ loggedIn, emailVerified }) => {
   let routes;
+
   if (loggedIn && !emailVerified) {
     routes = (
-      <Switch>
-        <Route exact path="/verifyemail" component={VerifyEmail} />
-        <Redirect to="/verifyemail" />
-      </Switch>
+      <>
+        <Route component={Navbar} />
+        <Switch>
+          <Route exact path="/verifyemail" component={VerifyEmail} />
+          <Redirect to="/verifyemail" />
+        </Switch>
+      </>
     );
   } else if (loggedIn && emailVerified) {
     routes = (
-      <Switch>
-        <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
-        <Redirect to="/" />
-      </Switch>
+      <>
+        <Route component={Navbar} />
+        <Switch>
+          <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
+          <Redirect to="/" />
+        </Switch>
+      </>
     );
   } else {
     routes = (
-      <Switch>
-        <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
-        <Route
-          exact
-          path="/signup"
-          render={() => <Signup isLoggedIn={loggedIn} />}
-        />
-        <Route exact path="/login" component={Login} />
-        <Redirect to="/" />
-      </Switch>
+      <>
+        <Route component={Navbar} />
+        <Switch>
+          <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
+          <Route
+            exact
+            path="/signup"
+            render={() => <Signup isLoggedIn={loggedIn} />}
+          />
+          <Route exact path="/login" component={Login} />
+          <Redirect to="/" />
+        </Switch>
+      </>
     );
   }
 
@@ -50,7 +61,7 @@ const App = ({ loggedIn, emailVerified }) => {
 const mapStateToProps = ({ firebase }) => {
   return {
     loggedIn: firebase.auth.uid,
-    emailVerified: firebase.auth.emailVerified
+    emailVerified: firebase.auth.emailVerified,
   };
 };
 
