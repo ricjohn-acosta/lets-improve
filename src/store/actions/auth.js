@@ -27,6 +27,7 @@ export function signUp(email, password) {
         dispatch({ type: actions.AUTH_SUCCESS });
       })
       .catch(err => {
+        console.log(err)
         dispatch({ type: actions.AUTH_FAIL, payload: err.message });
       });
     dispatch({ type: actions.AUTH_END });

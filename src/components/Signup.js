@@ -3,7 +3,12 @@ import { signUp } from "../store/actions/auth";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Signup = ({ signUp, isLoggedIn }) => {
+// MATERIAL-UI COMPONENTS
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+
+const Signup = ({ signUp, signupError, isLoggedIn }) => {
   function handleSignup(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
@@ -13,42 +18,108 @@ const Signup = ({ signUp, isLoggedIn }) => {
 
     signUp(userEmail, password);
   }
+
+  function errorHandler() {
+    if (signupError !== null) {
+      let errorData = {
+        isWrong: true,
+        passwordErrorMessage: signupError.search("Password") >= 0
+          ? signupError
+          : null,
+        emailErrorMessage: signupError.search("email") >= 0
+          ? signupError
+          : null,
+      };
+      return signupError === null ? false : errorData;
+    } else {
+      return false;
+    }
+    // if(signupError === null) {
+    //   return false
+    // } else {
+    //   return true
+    // }
+  }
+
+  // function passwordErrorHandler() {
+  //   if (signupError !== null) {
+  //     return signupError.search("Password") >= 0 ? signupError : null;
+  //   }
+  // }
+
+  // function emailErrorHandler() {
+  //   if(signupError !== null) {
+  //     return signupError.search("email") >= 0 ? signupError : null;
+  //   }
+  // }
+
+  // function errorMessageUtil(errorMessage) {
+  //   let errorData = {
+  //     passwordErrorMessage:
+  //   }
+  //   if(errorMessage === null) {
+  //     return null
+  //   } else if (errorMessage.search("Password") >= 0) {
+  //     return errorMessage;
+  //   } else if (errorMessage.search("email") >= 0) {
+  //     return errorMessage;
+  //   }
+
+  // }
   return (
     <>
       <form onSubmit={handleSignup}>
-        Email:
-        <input
+        <TextField
+          error={errorHandler()}
+          helperText={errorHandler().emailErrorMessage}
+          fullWidth={true}
           type="email"
           name="email"
-          onChange={e => console.log(e.target.value)}
+          label="Email"
+          onChange={(e) => console.log(e.target.value)}
         />
         <br />
-        Password:
-        <input
+        <br />
+        <TextField
+          error={errorHandler()}
+          helperText={errorHandler().passwordErrorMessage}
+          fullWidth={true}
           type="password"
           name="password"
-          onChange={e => console.log(e.target.value)}
+          label="Password"
+          onChange={(e) => console.log(e.target.value)}
         />
         <br />
-        {/* Username:
-          <input
-            type="text"
-            name="username"
-            onChange={e => console.log(e.target.value)}
-          />
-          <br /> */}
-        <button type="submit">Signup</button>
+        <br />
+        <ButtonGroup
+          size="large"
+          color="primary"
+          aria-label="large outlined primary button group"
+        >
+          <Button type="submit">Signup</Button>
+          <Button>
+            {isLoggedIn ? null : (
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                Login
+              </Link>
+            )}
+          </Button>
+        </ButtonGroup>
       </form>
-
-      {isLoggedIn ? null : <Link to="/login">Login</Link>}
     </>
   );
 };
 
-function mapDispatchToProps(dispatch) {
+const mapStateToProps = (state) => {
   return {
-    signUp: (email, password) => dispatch(signUp(email, password))
+    signupError: state.auth.error,
   };
-}
+};
 
-export default connect(null, mapDispatchToProps)(Signup);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signUp: (email, password) => dispatch(signUp(email, password)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

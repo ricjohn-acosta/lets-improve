@@ -11,8 +11,6 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 // Redux
 import { connect } from "react-redux";
-// Material-ui
-import { Grid } from "@material-ui/core";
 
 const App = ({ loggedIn, emailVerified }) => {
   let routes;
@@ -45,31 +43,17 @@ const App = ({ loggedIn, emailVerified }) => {
   } else {
     routes = (
       <>
-        <Grid container direction="column">
-          <Grid item xs={12}>
-            <Route component={Navbar} />
-          </Grid>
-
-          <Grid item container>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => <Home isLoggedIn={loggedIn} />}
-              />
-              {/* <Grid item xs={5}>
-                <Route
-                  exact
-                  path="/signup"
-                  render={() => <Signup isLoggedIn={loggedIn} />}
-                />
-              </Grid>
-
-              <Route exact path="/login" component={Login} /> */}
-              <Redirect to="/" />
-            </Switch>
-          </Grid>
-        </Grid>
+        <Route component={Navbar} />
+        <Switch>
+          <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
+          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/signup"
+            render={() => <Signup isLoggedIn={loggedIn} />}
+          />
+          <Redirect to="/" />
+        </Switch>
       </>
     );
   }
