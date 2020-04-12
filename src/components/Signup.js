@@ -5,37 +5,33 @@ import { Link } from "react-router-dom";
 
 // MATERIAL-UI STYLING
 import { makeStyles } from "@material-ui/core/styles";
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from "@material-ui/core/styles";
 // MATERIAL-UI COMPONENTS
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Paper from "@material-ui/core/Paper";
 
-
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-
-
     [theme.breakpoints.down("xs")]: {
-      margin: "5px"
+      margin: "5px",
     },
 
     [theme.breakpoints.width("768")]: {
-      marginRight: "50vw"
+      marginRight: "50vw",
     },
     [theme.breakpoints.up("sm")]: {
-      marginRight: "3vw",
+      marginRight: "5vw",
       marginLeft: "-5vw",
-      marginTop:"10vw",
-      overflow:"hidden"
+      marginTop: "10vw",
+      overflow: "hidden",
+      backgroundColor: "#EAEAEA",
     },
-
   },
   form: {
-    padding:"30px"
-    
-  }
+    padding: "30px",
+  },
 }));
 
 const Signup = ({ signUp, signupError, isLoggedIn }) => {
@@ -52,9 +48,12 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   function errorHandler() {
     if (signupError !== null) {
       let errorData = {
-        isWrong: true,
+        
+        passwordIsWrong: signupError.search("Password") >= 0 ? true : null,
         passwordErrorMessage:
           signupError.search("Password") >= 0 ? signupError : null,
+
+        emailIsWrong: signupError.search("email") >= 0 ? true : null,
         emailErrorMessage:
           signupError.search("email") >= 0 ? signupError : null,
       };
@@ -67,10 +66,10 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   const classes = useStyles();
   return (
     <>
-      <Paper className={classes.formContainer} variant="outlined" elevation={3} square>
+      <Paper className={classes.formContainer} variant="outlined" elevation={3}>
         <form className={classes.form} onSubmit={handleSignup}>
           <TextField
-            error={errorHandler()}
+            error={errorHandler().emailIsWrong}
             helperText={errorHandler().emailErrorMessage}
             fullWidth
             type="email"
@@ -81,7 +80,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
           <br />
           <br />
           <TextField
-            error={errorHandler()}
+            error={errorHandler().passwordIsWrong}
             helperText={errorHandler().passwordErrorMessage}
             fullWidth
             type="password"
@@ -92,7 +91,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
           <br />
           <br />
           <ButtonGroup
-            style={{minWidth: "30px"}}
+            style={{ minWidth: "30px" }}
             size="large"
             color="primary"
             aria-label="large outlined primary button group"
@@ -100,7 +99,10 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
             <Button type="submit">Signup</Button>
             <Button>
               {isLoggedIn ? null : (
-                <Link to="/login" style={{ textDecoration: "none" }}>
+                <Link
+                  to="/login"
+                  style={{ color: "#3f51b5", textDecoration: "none" }}
+                >
                   Login
                 </Link>
               )}
