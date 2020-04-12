@@ -3,10 +3,19 @@ import { signUp } from "../store/actions/auth";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
+// MATERIAL-UI STYLING
+import { makeStyles } from "@material-ui/core/styles";
 // MATERIAL-UI COMPONENTS
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Paper from "@material-ui/core/Paper";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: '30px'
+  },
+}));
 
 const Signup = ({ signUp, signupError, isLoggedIn }) => {
   function handleSignup(e) {
@@ -23,89 +32,58 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
     if (signupError !== null) {
       let errorData = {
         isWrong: true,
-        passwordErrorMessage: signupError.search("Password") >= 0
-          ? signupError
-          : null,
-        emailErrorMessage: signupError.search("email") >= 0
-          ? signupError
-          : null,
+        passwordErrorMessage:
+          signupError.search("Password") >= 0 ? signupError : null,
+        emailErrorMessage:
+          signupError.search("email") >= 0 ? signupError : null,
       };
       return signupError === null ? false : errorData;
     } else {
       return false;
     }
-    // if(signupError === null) {
-    //   return false
-    // } else {
-    //   return true
-    // }
   }
 
-  // function passwordErrorHandler() {
-  //   if (signupError !== null) {
-  //     return signupError.search("Password") >= 0 ? signupError : null;
-  //   }
-  // }
-
-  // function emailErrorHandler() {
-  //   if(signupError !== null) {
-  //     return signupError.search("email") >= 0 ? signupError : null;
-  //   }
-  // }
-
-  // function errorMessageUtil(errorMessage) {
-  //   let errorData = {
-  //     passwordErrorMessage:
-  //   }
-  //   if(errorMessage === null) {
-  //     return null
-  //   } else if (errorMessage.search("Password") >= 0) {
-  //     return errorMessage;
-  //   } else if (errorMessage.search("email") >= 0) {
-  //     return errorMessage;
-  //   }
-
-  // }
+  const classes = useStyles();
   return (
     <>
-      <form onSubmit={handleSignup}>
-        <TextField
-          error={errorHandler()}
-          helperText={errorHandler().emailErrorMessage}
-          fullWidth={true}
-          type="email"
-          name="email"
-          label="Email"
-          onChange={(e) => console.log(e.target.value)}
-        />
-        <br />
-        <br />
-        <TextField
-          error={errorHandler()}
-          helperText={errorHandler().passwordErrorMessage}
-          fullWidth={true}
-          type="password"
-          name="password"
-          label="Password"
-          onChange={(e) => console.log(e.target.value)}
-        />
-        <br />
-        <br />
-        <ButtonGroup
-          size="large"
-          color="primary"
-          aria-label="large outlined primary button group"
-        >
-          <Button type="submit">Signup</Button>
-          <Button>
-            {isLoggedIn ? null : (
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                Login
-              </Link>
-            )}
-          </Button>
-        </ButtonGroup>
-      </form>
+      <Paper className={classes.root} variant="outlined" elevation={3} square>
+        <form className={classes.root} onSubmit={handleSignup}>
+          <TextField
+            error={errorHandler()}
+            helperText={errorHandler().emailErrorMessage}
+            type="email"
+            name="email"
+            label="Email"
+            onChange={(e) => console.log(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            error={errorHandler()}
+            helperText={errorHandler().passwordErrorMessage}
+            type="password"
+            name="password"
+            label="Password"
+            onChange={(e) => console.log(e.target.value)}
+          />
+          <br />
+          <br />
+          <ButtonGroup
+            size="large"
+            color="primary"
+            aria-label="large outlined primary button group"
+          >
+            <Button type="submit">Signup</Button>
+            <Button>
+              {isLoggedIn ? null : (
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  Login
+                </Link>
+              )}
+            </Button>
+          </ButtonGroup>
+        </form>
+      </Paper>
     </>
   );
 };
