@@ -5,16 +5,37 @@ import { Link } from "react-router-dom";
 
 // MATERIAL-UI STYLING
 import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme } from '@material-ui/core/styles';
 // MATERIAL-UI COMPONENTS
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Paper from "@material-ui/core/Paper";
 
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    margin: '30px'
+  formContainer: {
+
+
+    [theme.breakpoints.down("xs")]: {
+      margin: "5px"
+    },
+
+    [theme.breakpoints.width("768")]: {
+      marginRight: "50vw"
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginRight: "3vw",
+      marginLeft: "-5vw",
+      marginTop:"10vw",
+      overflow:"hidden"
+    },
+
   },
+  form: {
+    padding:"30px"
+    
+  }
 }));
 
 const Signup = ({ signUp, signupError, isLoggedIn }) => {
@@ -46,11 +67,12 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   const classes = useStyles();
   return (
     <>
-      <Paper className={classes.root} variant="outlined" elevation={3} square>
-        <form className={classes.root} onSubmit={handleSignup}>
+      <Paper className={classes.formContainer} variant="outlined" elevation={3} square>
+        <form className={classes.form} onSubmit={handleSignup}>
           <TextField
             error={errorHandler()}
             helperText={errorHandler().emailErrorMessage}
+            fullWidth
             type="email"
             name="email"
             label="Email"
@@ -61,6 +83,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
           <TextField
             error={errorHandler()}
             helperText={errorHandler().passwordErrorMessage}
+            fullWidth
             type="password"
             name="password"
             label="Password"
@@ -69,6 +92,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
           <br />
           <br />
           <ButtonGroup
+            style={{minWidth: "30px"}}
             size="large"
             color="primary"
             aria-label="large outlined primary button group"
