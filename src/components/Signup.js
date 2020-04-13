@@ -5,32 +5,43 @@ import { Link } from "react-router-dom";
 
 // MATERIAL-UI STYLING
 import { makeStyles } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
 // MATERIAL-UI COMPONENTS
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Paper from "@material-ui/core/Paper";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
     [theme.breakpoints.down("xs")]: {
       margin: "5px",
+      marginTop: "-50vw",
     },
 
-    [theme.breakpoints.width("768")]: {
-      marginRight: "50vw",
-    },
-    [theme.breakpoints.up("sm")]: {
-      marginRight: "5vw",
-      marginLeft: "-5vw",
+    [theme.breakpoints.between("sm", "xl")]: {
       marginTop: "10vw",
-      overflow: "hidden",
+      marginRight: "5vw",
+      marginLeft: "2.5vw",
+      backgroundColor: "#EAEAEA",
+    },
+
+    [theme.breakpoints.up("3000")]: {
+      marginTop: "5vw",
+      marginRight: "5vw",
+      marginLeft: "2.5vw",
       backgroundColor: "#EAEAEA",
     },
   },
   form: {
     padding: "30px",
+  },
+  formTitle: {
+    paddingLeft: "20px",
+    paddingTop: "20px",
+  },
+  formSubtitle: {
+    paddingLeft: "25px",
   },
 }));
 
@@ -46,9 +57,8 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   }
 
   function errorHandler() {
-    if (signupError !== null) {
+    if (signupError !== null || false) {
       let errorData = {
-        
         passwordIsWrong: signupError.search("Password") >= 0 ? true : null,
         passwordErrorMessage:
           signupError.search("Password") >= 0 ? signupError : null,
@@ -67,6 +77,15 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   return (
     <>
       <Paper className={classes.formContainer} variant="outlined" elevation={3}>
+        <div>
+          <Typography className={classes.formTitle} variant={"h3"}>
+            Sign up!
+          </Typography>
+          <Typography className={classes.formSubtitle} variant={"h5"}>
+            It's free ;)
+          </Typography>
+        </div>
+
         <form className={classes.form} onSubmit={handleSignup}>
           <TextField
             error={errorHandler().emailIsWrong}
@@ -96,17 +115,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
             color="primary"
             aria-label="large outlined primary button group"
           >
-            <Button type="submit">Signup</Button>
-            <Button>
-              {isLoggedIn ? null : (
-                <Link
-                  to="/login"
-                  style={{ color: "#3f51b5", textDecoration: "none" }}
-                >
-                  Login
-                </Link>
-              )}
-            </Button>
+            <Button type="submit">Create account</Button>
           </ButtonGroup>
         </form>
       </Paper>

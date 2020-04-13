@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100vw",
     height: "100vh",
-    overflow: "hidden",
     backgroundColor: "#2b2b2b"
   }
 }));
@@ -25,15 +24,15 @@ const Home = ({ isLoggedIn }) => {
 
   return (
     <>
-      Home
+      
       <Grid className={classes.root} container direction="column">
-        <Grid item container>
-          <Grid item xs={12} sm={8}>
-         
+        <Grid className={classes.root} item container>
+          <Grid item xs={12} sm={7}>
+          Home
 
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={5}>
             {!isLoggedIn ? <Signup /> : <Logout />}
           </Grid>
         </Grid>
