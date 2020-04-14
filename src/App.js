@@ -33,7 +33,11 @@ const App = ({ loggedIn, emailVerified }) => {
   } else if (loggedIn && emailVerified) {
     routes = (
       <>
-        <Route component={Navbar} />
+        <Route
+          render={() => (
+            <Navbar currentRoute={location.pathname} isLoggedIn={loggedIn} />
+          )}
+        />
         <Switch>
           <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
           <Redirect to="/" />
@@ -45,7 +49,11 @@ const App = ({ loggedIn, emailVerified }) => {
   } else {
     routes = (
       <>
-        <Route render={() => <Navbar currentRoute={location.pathname} />} />
+        <Route
+          render={() => (
+            <Navbar currentRoute={location.pathname}/>
+          )}
+        />
         <Switch>
           <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
           <Route

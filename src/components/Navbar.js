@@ -2,7 +2,7 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { Toolbar, Typography } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
-
+import { connect } from "react-redux";
 // MATERIAL-UI STYLING
 import { makeStyles } from "@material-ui/core/styles";
 // MATERIAL-UI COMPONENTS
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
   },
 }));
-const Navbar = ({ currentRoute }) => {
+const Navbar = ({ currentRoute, isLoggedIn}) => {
 
   const classes = useStyles();
   return (
@@ -32,11 +32,18 @@ const Navbar = ({ currentRoute }) => {
               </Typography>
             </Grid>
 
-            <Grid item>{currentRoute === "/login" ? null : <Login />}</Grid>
+            <Grid item>{currentRoute === "/login" || isLoggedIn ? <div/> : <Login />}</Grid>
           </Toolbar>
       </AppBar>
     </>
   );
 };
 
-export default Navbar;
+const mapStateToProps = ({ firebase }) => {
+  return {
+    isLoggedIn: firebase.auth.uid,
+    emailVerified: firebase.auth.emailVerified,
+  };
+};
+
+export default connect(mapStateToProps)(Navbar);
