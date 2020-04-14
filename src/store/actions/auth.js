@@ -5,7 +5,7 @@ import * as actions from "./actionTypes";
 // Function that handles signup action - Returns an anonymous function
 export function signUp(email, password) {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    dispatch({ type: actions.AUTH_START });
+    dispatch({ type: actions.AUTH_START, payload: true});
     const firebase = getFirebase();
     const firestore = getFirestore();
 
@@ -27,6 +27,7 @@ export function signUp(email, password) {
         dispatch({ type: actions.AUTH_SUCCESS });
       })
       .catch(err => {
+        console.log(err)
         dispatch({ type: actions.AUTH_FAIL, payload: err.message });
       });
     dispatch({ type: actions.AUTH_END });

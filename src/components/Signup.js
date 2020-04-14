@@ -3,52 +3,158 @@ import { signUp } from "../store/actions/auth";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Signup = ({ signUp, isLoggedIn }) => {
+// MATERIAL-UI STYLING
+import { makeStyles } from "@material-ui/core/styles";
+// MATERIAL-UI COMPONENTS
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Paper from "@material-ui/core/Paper";
+import { Typography } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  formContainer: {
+    [theme.breakpoints.up("xs")]: {
+      margin: "5px",
+      marginTop: "-50vw",
+    },
+
+    [theme.breakpoints.between("sm", "xl")]: {
+      marginTop: "10vw",
+      marginRight: "5vw",
+      marginLeft: "2.5vw",
+      backgroundColor: "#EAEAEA",
+    },
+
+    [theme.breakpoints.up("3000")]: {
+      marginTop: "5vw",
+      marginRight: "5vw",
+      marginLeft: "2.5vw",
+      backgroundColor: "#EAEAEA",
+    },
+  },
+  form: {
+    padding: "30px",
+  },
+  formTitle: {
+    paddingLeft: "20px",
+    paddingTop: "20px",
+  },
+  formSubtitle: {
+    paddingLeft: "25px",
+  },
+  signupPage: {
+    [theme.breakpoints.up("xs")]: {
+      margin: "5px",
+      marginTop: "10vw",
+    },
+  },
+}));
+
+const Signup = ({
+  signUp,
+  signupClicked,
+  signupError,
+  currentRoute,
+  isLoggedIn,
+}) => {
   function handleSignup(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
     let password = e.target[1].value;
+    console.log(e.target);
     console.log(userEmail);
     console.log(password);
 
     signUp(userEmail, password);
   }
+
+  function errorHandler() {
+    if (signupError !== null && signupError !== false && signupClicked) {
+      let errorData = {
+        passwordIsWrong: signupError.search("Password") >= 0 ? true : null,
+        passwordErrorMessage:
+          signupError.search("Password") >= 0 ? signupError : null,
+
+        emailIsWrong: signupError.search("email") >= 0 ? true : null,
+        emailErrorMessage:
+          signupError.search("email") >= 0 ? signupError : null,
+      };
+      return signupError === null ? false : errorData;
+    } else {
+      return false;
+    }
+  }
+
+  const classes = useStyles();
   return (
     <>
-      <form onSubmit={handleSignup}>
-        Email:
-        <input
-          type="email"
-          name="email"
-          onChange={e => console.log(e.target.value)}
-        />
-        <br />
-        Password:
-        <input
-          type="password"
-          name="password"
-          onChange={e => console.log(e.target.value)}
-        />
-        <br />
-        {/* Username:
-          <input
-            type="text"
-            name="username"
-            onChange={e => console.log(e.target.value)}
-          />
-          <br /> */}
-        <button type="submit">Signup</button>
-      </form>
+      <Paper
+        className={
+          currentRoute === "/signup"
+            ? classes.signupPage
+            : classes.formContainer
+        }
+        variant="outlined"
+        elevation={3}
+      >
+        <div>
+          <Typography className={classes.formTitle} variant={"h3"}>
+            Sign up!
+          </Typography>
+          <Typography className={classes.formSubtitle} variant={"h5"}>
+            It's free ;)
+          </Typography>
+        </div>
 
-      {isLoggedIn ? null : <Link to="/login">Login</Link>}
+        <form className={classes.form} onSubmit={handleSignup}>
+          <TextField
+            error={errorHandler().emailIsWrong}
+            helperText={errorHandler().emailErrorMessage}
+            fullWidth
+            type="email"
+            name="email"
+            label="Email"
+            onChange={(e) => console.log(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            error={errorHandler().passwordIsWrong}
+            helperText={errorHandler().passwordErrorMessage}
+            fullWidth
+            type="password"
+            name="password"
+            label="Password"
+            onChange={(e) => console.log(e.target.value)}
+          />
+          <br />
+          <br />
+          <ButtonGroup
+            style={{ minWidth: "30px" }}
+            size="large"
+            color="primary"
+            aria-label="large outlined primary button group"
+          >
+            <Button type="submit">Create account</Button>
+          </ButtonGroup>
+        </form>
+      </Paper>
     </>
   );
 };
 
-function mapDispatchToProps(dispatch) {
+const mapStateToProps = (state) => {
   return {
-    signUp: (email, password) => dispatch(signUp(email, password))
+    signupError: state.auth.error,
+    signupClicked: state.auth.signin,
   };
-}
+};
 
-export default connect(null, mapDispatchToProps)(Signup);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signUp: (email, password) => dispatch(signUp(email, password)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
