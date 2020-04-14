@@ -14,7 +14,7 @@ import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.up("xs")]: {
       margin: "5px",
       marginTop: "-50vw",
     },
@@ -43,13 +43,26 @@ const useStyles = makeStyles((theme) => ({
   formSubtitle: {
     paddingLeft: "25px",
   },
+  signupPage: {
+    [theme.breakpoints.up("xs")]: {
+      margin: "5px",
+      marginTop: "10vw",
+    },
+  },
 }));
 
-const Signup = ({ signUp, signupError, isLoggedIn }) => {
+const Signup = ({
+  signUp,
+  signupClicked,
+  signupError,
+  currentRoute,
+  isLoggedIn,
+}) => {
   function handleSignup(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
     let password = e.target[1].value;
+    console.log(e.target);
     console.log(userEmail);
     console.log(password);
 
@@ -57,7 +70,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   }
 
   function errorHandler() {
-    if (signupError !== null || false) {
+    if (signupError !== null && signupError !== false && signupClicked) {
       let errorData = {
         passwordIsWrong: signupError.search("Password") >= 0 ? true : null,
         passwordErrorMessage:
@@ -76,7 +89,15 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
   const classes = useStyles();
   return (
     <>
-      <Paper className={classes.formContainer} variant="outlined" elevation={3}>
+      <Paper
+        className={
+          currentRoute === "/signup"
+            ? classes.signupPage
+            : classes.formContainer
+        }
+        variant="outlined"
+        elevation={3}
+      >
         <div>
           <Typography className={classes.formTitle} variant={"h3"}>
             Sign up!
@@ -126,6 +147,7 @@ const Signup = ({ signUp, signupError, isLoggedIn }) => {
 const mapStateToProps = (state) => {
   return {
     signupError: state.auth.error,
+    signupClicked: state.auth.signin,
   };
 };
 

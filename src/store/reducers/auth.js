@@ -3,6 +3,8 @@ import * as actions from "../actions/actionTypes";
 const initialState = {
   error: null,
   loading: false,
+  signin: false,
+  login: false,
   verifyEmail: {
     error: null,
     loading: false
@@ -10,8 +12,8 @@ const initialState = {
 };
 
 // HELPER FUNCTIONS
-const authStart = state => {
-  return { ...state, loading: true };
+const authStart = (state, payload) => {
+  return { ...state, loading: true, signin: payload };
 };
 
 const authEnd = state => {
@@ -51,7 +53,7 @@ const verifyEmailFail = (state, payload) => {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case actions.AUTH_START:
-      return authStart(state);
+      return authStart(state, payload);
 
     case actions.AUTH_END:
       return authEnd(state);

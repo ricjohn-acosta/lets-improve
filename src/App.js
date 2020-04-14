@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { useLocation } from "react-router-dom";
 
 // React-router
 import { Route, Switch, Redirect } from "react-router";
@@ -13,6 +14,7 @@ import Navbar from "./components/Navbar";
 import { connect } from "react-redux";
 
 const App = ({ loggedIn, emailVerified }) => {
+  let location = useLocation();
   let routes;
 
   // if logged in but email is not verified
@@ -43,14 +45,20 @@ const App = ({ loggedIn, emailVerified }) => {
   } else {
     routes = (
       <>
-        <Route component={Navbar} />
+        <Route render={() => <Navbar currentRoute={location.pathname} />} />
         <Switch>
           <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
-          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/login"
+            render={() => <Login currentRoute={location.pathname} />}
+          />
           <Route
             exact
             path="/signup"
-            render={() => <Signup isLoggedIn={loggedIn} />}
+            render={() => (
+              <Signup currentRoute={location.pathname} isLoggedIn={loggedIn} />
+            )}
           />
           <Redirect to="/" />
         </Switch>
