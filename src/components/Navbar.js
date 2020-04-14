@@ -28,7 +28,7 @@ const Navbar = ({ currentRoute, isLoggedIn}) => {
           <Toolbar>
             <Grid item sm={8}>
               <Typography className={classes.navbarText} variant={"h2"}>
-                Let's improve!
+                Let's improve test!
               </Typography>
             </Grid>
 
