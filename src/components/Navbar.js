@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 // COMPONENTS
 import Login from "./Login";
+import Logout from "./Logout";
 
 const useStyles = makeStyles((theme) => ({
   navbarText: {
@@ -32,7 +33,7 @@ const Navbar = ({ currentRoute, isLoggedIn}) => {
               </Typography>
             </Grid>
 
-            <Grid item>{currentRoute === "/login" || isLoggedIn ? <div/> : <Login />}</Grid>
+            <Grid item>{currentRoute === "/login" || isLoggedIn ? <Logout /> : <Login />}</Grid>
           </Toolbar>
       </AppBar>
     </>
