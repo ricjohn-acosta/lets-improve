@@ -1,8 +1,9 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { responsiveFontSizes  } from "@material-ui/core";
 import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
     fontFamily: [
       "Open Sans",
@@ -16,5 +17,7 @@ const theme = createMuiTheme({
     ].join(","),
   },
 });
+
+theme = responsiveFontSizes(theme)
 
 export default theme;

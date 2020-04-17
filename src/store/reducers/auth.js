@@ -3,24 +3,30 @@ import * as actions from "../actions/actionTypes";
 const initialState = {
   error: null,
   loading: false,
-  signin: false,
-  login: false,
   verifyEmail: {
     error: null,
-    loading: false
-  }
+    loading: false,
+  },
+  currentRoute: {
+    signin: false,
+    login: false,
+  },
 };
 
 // HELPER FUNCTIONS
 const authStart = (state, payload) => {
-  return { ...state, loading: true, signin: payload };
+  return {
+    ...state,
+    loading: true,
+    currentRoute: { ...state.currentRoute, signin: payload },
+  };
 };
 
-const authEnd = state => {
+const authEnd = (state) => {
   return { ...state, loading: false };
 };
 
-const authSuccess = state => {
+const authSuccess = (state) => {
   return { ...state, error: false };
 };
 
@@ -28,24 +34,24 @@ const authFail = (state, payload) => {
   return { ...state, error: payload };
 };
 
-const verifyEmailStart = state => {
+const verifyEmailStart = (state) => {
   return {
     ...state,
-    verifyEmail: { ...state.verifyEmail, loading: true }
+    verifyEmail: { ...state.verifyEmail, loading: true },
   };
 };
 
-const verifyEmailSuccess = state => {
+const verifyEmailSuccess = (state) => {
   return {
     ...state,
-    verifyEmail: { ...state.verifyEmail, loading: false, error: false }
+    verifyEmail: { ...state.verifyEmail, loading: false, error: false },
   };
 };
 
 const verifyEmailFail = (state, payload) => {
   return {
     ...state.verifyEmail,
-    verifyEmail: { ...state.verifyEmail, loading: false, error: payload }
+    verifyEmail: { ...state.verifyEmail, loading: false, error: payload },
   };
 };
 
@@ -72,7 +78,7 @@ export default (state = initialState, { type, payload }) => {
 
     case actions.VERIFY_EMAIL_FAIL:
       return verifyEmailFail(state, payload);
-      
+
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 // COMPONENTS
 import Signup from "../components/Signup";
 import Logout from "../components/Logout";
+import Sidebar from "../components/Sidebar";
 // MATERIAL-UI STYLING
 import { makeStyles } from "@material-ui/core/styles";
 // MATERIAL COMPONENTS
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
     backgroundColor: "#2b2b2b",
   },
+  
 }));
 
 const Home = ({ isLoggedIn }) => {
@@ -27,10 +29,10 @@ const Home = ({ isLoggedIn }) => {
       <Grid className={classes.root} container direction="column">
         <Grid className={classes.root} item container>
           <Grid item xs={12} sm={7}>
+            <Sidebar />
           </Grid>
-
           <Grid item xs={12} sm={5}>
-            {!isLoggedIn ? <Signup /> : <Logout />}
+            {!isLoggedIn ? <Signup /> : null}
           </Grid>
         </Grid>
       </Grid>
@@ -38,4 +40,10 @@ const Home = ({ isLoggedIn }) => {
   );
 };
 
-export default Home;
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     closeSidebar: () => dispatch(closeSidebar()),
+//   };
+// };
+
+export default connect()(Home);

@@ -144,7 +144,9 @@ const Login = ({ signIn, currentRoute }) => {
             <div>
               <br></br>
             </div>
-          ) : <span>&nbsp;</span>}
+          ) : (
+            <span>&nbsp;</span>
+          )}
           <Button
             variant="contained"
             color="primary"
