@@ -25,13 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ currentRoute, isLoggedIn, showSidebar }) => {
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleDrawerOpen = () => {
-  //   setOpen(true);
-  // };
-
+const Navbar = ({ currentRoute, isLoggedIn, showSidebar, isOpen }) => {
   const classes = useStyles();
   return (
     <>
@@ -45,14 +39,14 @@ const Navbar = ({ currentRoute, isLoggedIn, showSidebar }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Grid item sm={2}></Grid>
+          {isOpen ? <Grid item sm={2} /> : null}
           <Grid item sm={8}>
             <Typography className={classes.navbarText} variant={"h2"}>
               Let's improve test!
             </Typography>
           </Grid>
 
-          <Grid item>
+          <Grid item sm= {5}>
             {currentRoute === "/login" || isLoggedIn ? <Logout /> : <Login />}
           </Grid>
         </Toolbar>
@@ -61,12 +55,12 @@ const Navbar = ({ currentRoute, isLoggedIn, showSidebar }) => {
   );
 };
 
-const mapStateToProps = ({ firebase }) => {
+const mapStateToProps = ({ views }) => {
   return {
-    isLoggedIn: firebase.auth.uid,
-    emailVerified: firebase.auth.emailVerified,
+    isOpen: views.drawer.isOpen
   };
 };
+
 
 const mapDispatchToProps = (dispatch) => {
   return {

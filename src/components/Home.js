@@ -40,10 +40,5 @@ const Home = ({ isLoggedIn }) => {
   );
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     closeSidebar: () => dispatch(closeSidebar()),
-//   };
-// };
 
 export default connect()(Home);
