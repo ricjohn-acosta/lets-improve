@@ -61,12 +61,13 @@ const Signup = ({
   function handleSignup(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
-    let password = e.target[1].value;
-    console.log(e.target);
-    console.log(userEmail);
-    console.log(password);
+    let username = e.target[1].value;
+    let password = e.target[2].value;
+    console.log("email", userEmail);
+    console.log("username", username);
+    console.log("password", password);
 
-    signUp(userEmail, password);
+    signUp(userEmail, username, password);
   }
 
   function errorHandler() {
@@ -123,6 +124,17 @@ const Signup = ({
             error={errorHandler().passwordIsWrong}
             helperText={errorHandler().passwordErrorMessage}
             fullWidth
+            type="username"
+            name="username"
+            label="Username"
+            onChange={(e) => console.log(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            error={errorHandler().passwordIsWrong}
+            helperText={errorHandler().passwordErrorMessage}
+            fullWidth
             type="password"
             name="password"
             label="Password"
@@ -153,7 +165,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signUp: (email, password) => dispatch(signUp(email, password)),
+    signUp: (email, username, password) => dispatch(signUp(email, username,password)),
   };
 };
 

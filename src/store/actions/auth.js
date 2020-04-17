@@ -3,31 +3,33 @@ import * as actions from "./actionTypes";
 
 // TODO: CREATE SIGNUP ACTION
 // Function that handles signup action - Returns an anonymous function
-export function signUp(email, password) {
+export function signUp(email, username, password) {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    dispatch({ type: actions.AUTH_START, payload: true});
+    dispatch({ type: actions.AUTH_START, payload: true });
     const firebase = getFirebase();
     const firestore = getFirestore();
 
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(res => {
+      .then((res) => {
         const currentUser = firebase.auth().currentUser;
         currentUser.sendEmailVerification().then(() => {
-          console.log("VERIFICATION EMAIL SENT");
+          currentUser.updateProfile({ displayName: username }).then(() => {
+            console.log("VERIFICATION EMAIL SENT AND DISPLAY NAME SET");
+          });
         });
         firestore
           .collection("users")
           .doc(res.user.uid)
-          .set({ firstName: email, lastName: password })
+          .set({ user_name: username})
           .then(() => {
             console.log("USER ADDED TO FIRESTORE");
           });
         dispatch({ type: actions.AUTH_SUCCESS });
       })
-      .catch(err => {
-        console.log(err)
+      .catch((err) => {
+        console.log(err);
         dispatch({ type: actions.AUTH_FAIL, payload: err.message });
       });
     dispatch({ type: actions.AUTH_END });
@@ -46,7 +48,7 @@ export function logIn(email, password) {
         console.log("USER LOGGED IN ");
         dispatch({ type: actions.AUTH_SUCCESS });
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch({ type: actions.AUTH_FAIL, payload: err.message });
       });
     dispatch({ type: actions.AUTH_END });
@@ -62,7 +64,7 @@ export function signOut() {
       .then(() => {
         console.log("USER SIGNED OUT");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -75,11 +77,11 @@ export function verifyEmail() {
     firebase
       .auth()
       .currentUser()
-      .then(user => {
+      .then((user) => {
         user.sendEmailVerification();
         dispatch({ type: actions.VERIFY_EMAIL_SUCCESS });
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch({ type: actions.VERIFY_EMAIL_FAIL, payload: err.message });
       });
   };
