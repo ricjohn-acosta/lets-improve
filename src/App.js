@@ -10,6 +10,7 @@ import Signup from "./components/Signup";
 import VerifyEmail from "./components/VerifyEmail";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 // Redux
 import { connect } from "react-redux";
 
@@ -49,11 +50,8 @@ const App = ({ loggedIn, emailVerified }) => {
   } else {
     routes = (
       <>
-        <Route
-          render={() => (
-            <Navbar currentRoute={location.pathname}/>
-          )}
-        />
+        <Route component={Sidebar} />
+        <Route render={() => <Navbar currentRoute={location.pathname} />} />
         <Switch>
           <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
           <Route

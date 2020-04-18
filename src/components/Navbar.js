@@ -74,7 +74,7 @@ const Navbar = ({ currentRoute, isLoggedIn, showSidebar, isOpen }) => {
           </Grid>
 
           <Grid item sm={5}>
-            {currentRoute === "/login" || isLoggedIn ? <Logout /> : <Login />}
+            {currentRoute === "/login" || isLoggedIn ? null : <Login />}
           </Grid>
         </Toolbar>
       </AppBar>

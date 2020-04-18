@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
   },
   form: {
-    padding: "30px",
+    padding: "30px"
   },
   paper: {
     background: "transparent",
@@ -71,7 +71,7 @@ const Login = ({ signIn, currentRoute }) => {
   const classes = useStyles();
   return (
     <>
-      <Hidden lgDown>
+      <Hidden lgDown={currentRoute === "/login" ? false : true}>
         <Paper
           className={
             currentRoute === "/login" ? classes.paperPage : classes.paper

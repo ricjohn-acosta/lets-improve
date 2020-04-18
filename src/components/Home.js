@@ -28,9 +28,7 @@ const Home = ({ isLoggedIn }) => {
     <>
       <Grid className={classes.root} container direction="column">
         <Grid className={classes.root} item container>
-          <Grid item xs={12} sm={7}>
-            <Sidebar />
-          </Grid>
+          <Grid item xs={12} sm={7}/>
           <Grid item xs={12} sm={5}>
             {!isLoggedIn ? <Signup /> : null}
           </Grid>

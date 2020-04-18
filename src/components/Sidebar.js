@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { showSidebar } from "../store/actions/views";
 
+import Logout from "./Logout";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,6 +16,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,11 +73,91 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
+  sidebarFooterLoggedIn: {
+    marginTop: "60vh",
+  },
+  sidebarFooterLoggedOut: {
+    marginTop: "75vh",
+  },
 }));
 
-const Sidebar = ({ hideDrawer, isOpen, showSidebar }) => {
+const Sidebar = ({ isOpen, showSidebar, loggedIn }) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const loggedInComponents = (
+    <>
+      <List>
+        {["Profile", "Your tasks", "Rooms", "History"].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List
+        className={
+          loggedIn
+            ? classes.sidebarFooterLoggedIn
+            : classes.sidebarFooterLoggedOut
+        }
+      >
+        <Divider />
+        {/* {["About", <Logout />].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))} */}
+        <ListItem button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"About"} />
+        </ListItem>
+        <Logout />
+      </List>
+    </>
+  );
+
+  const loggedOutComponents = (
+    <>
+      <Divider />
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <ListItem button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Home"} />
+        </ListItem>
+      </Link>
+
+      <Link to="/login" style={{ textDecoration: "none" }}>
+        <ListItem button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Login"} />
+        </ListItem>
+      </Link>
+      <Divider />
+
+      <Link to="/signup" style={{ textDecoration: "none" }}>
+        <ListItem button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Signup"} />
+        </ListItem>
+      </Link>
+      <Divider />
+    </>
+  );
 
   return (
     <Drawer
@@ -97,41 +179,22 @@ const Sidebar = ({ hideDrawer, isOpen, showSidebar }) => {
         </IconButton>
       </div>
       <Divider />
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      {loggedIn ? loggedInComponents : loggedOutComponents}
     </Drawer>
   );
 };
 
-const mapStateToProps = ({ views }) => {
+const mapStateToProps = ({ views, firebase }) => {
   return {
-    isOpen: views.drawer.isOpen
+    isOpen: views.drawer.isOpen,
+    loggedIn: firebase.auth.uid,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-      showSidebar: (yesOrNo) => dispatch(showSidebar(yesOrNo)),
-    };
+  return {
+    showSidebar: (yesOrNo) => dispatch(showSidebar(yesOrNo)),
   };
-  
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
