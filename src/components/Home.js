@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Signup from "../components/Signup";
 import Logout from "../components/Logout";
 import Sidebar from "../components/Sidebar";
+
 // MATERIAL-UI STYLING
 import { makeStyles } from "@material-ui/core/styles";
 // MATERIAL COMPONENTS

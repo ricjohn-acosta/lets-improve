@@ -1,8 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { showSidebar } from "../store/actions/views";
+import { Link } from "react-router-dom";
 
+import { showSidebar } from "../store/actions/views";
 import Logout from "./Logout";
+import RoomButton from "./RoomButton";
+
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -16,7 +19,6 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,14 +90,15 @@ const Sidebar = ({ isOpen, showSidebar, loggedIn }) => {
   const loggedInComponents = (
     <>
       <List>
-        {["Profile", "Your tasks", "Rooms", "History"].map((text, index) => (
-          <ListItem button key={text}>
+        {["Profile", "Your tasks", "History"].map((text, index) => (
+          <ListItem button disabled key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
+        <RoomButton />
       </List>
       <Divider />
       <List
@@ -106,7 +109,7 @@ const Sidebar = ({ isOpen, showSidebar, loggedIn }) => {
         }
       >
         <Divider />
-        <ListItem button>
+        <ListItem disabled button>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
