@@ -18,6 +18,33 @@ import Logout from "./Logout";
 const useStyles = makeStyles((theme) => ({
   navbarText: {
     padding: "5px",
+
+    [theme.breakpoints.down("375")]: {
+      whiteSpace: "nowrap",
+      fontSize: "1.5rem",
+      marginLeft: "5vw",
+    },
+    [theme.breakpoints.between("375", "768")]: {
+      whiteSpace: "nowrap",
+      fontSize: "1.5rem",
+      marginLeft: "9vw",
+    },
+    [theme.breakpoints.up("768")]: {
+      whiteSpace: "nowrap",
+      fontSize: "2rem",
+      marginLeft: "25vw",
+    },
+    [theme.breakpoints.up("1024")]: {
+      whiteSpace: "nowrap",
+      fontSize: "2rem",
+      marginLeft: "30vw",
+    },
+    [theme.breakpoints.up("lg")]: {
+      whiteSpace: "nowrap",
+      marginLeft: "5vw",
+      fontSize: "3rem",
+    },
+    
   },
 
   loginForm: {
@@ -46,7 +73,7 @@ const Navbar = ({ currentRoute, isLoggedIn, showSidebar, isOpen }) => {
             </Typography>
           </Grid>
 
-          <Grid item sm= {5}>
+          <Grid item sm={5}>
             {currentRoute === "/login" || isLoggedIn ? <Logout /> : <Login />}
           </Grid>
         </Toolbar>
@@ -57,10 +84,9 @@ const Navbar = ({ currentRoute, isLoggedIn, showSidebar, isOpen }) => {
 
 const mapStateToProps = ({ views }) => {
   return {
-    isOpen: views.drawer.isOpen
+    isOpen: views.drawer.isOpen,
   };
 };
-
 
 const mapDispatchToProps = (dispatch) => {
   return {
