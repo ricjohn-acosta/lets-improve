@@ -61,11 +61,16 @@ const Login = ({ signIn, currentRoute }) => {
     e.preventDefault();
     let userEmail = e.target[0].value;
     let password = e.target[1].value;
+    let passwordNavbar = e.target[2].value;
     console.log(e.target);
     console.log(userEmail);
     console.log(password);
 
-    signIn(userEmail, password);
+    if (currentRoute === "/login") {
+      signIn(userEmail, password)
+    } else {
+      signIn(userEmail, passwordNavbar)
+    }
   }
 
   const classes = useStyles();
@@ -77,7 +82,7 @@ const Login = ({ signIn, currentRoute }) => {
             currentRoute === "/login" ? classes.paperPage : classes.paper
           }
           variant={currentRoute === "/login" ? "outlined" : null}
-          elevation={currentRoute === "/login" ? "3" : 0}
+          elevation={currentRoute === "/login" ? "3" : "0"}
         >
           {currentRoute === "/login" ? (
             <div>

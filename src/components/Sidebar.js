@@ -133,7 +133,6 @@ const Sidebar = ({ isOpen, showSidebar, loggedIn }) => {
         </ListItemIcon>
         <ListItemText primary={"Login"} />
       </ListItem>
-      <Divider />
 
       <ListItem component={Link} to={"/signup"} button>
         <ListItemIcon>

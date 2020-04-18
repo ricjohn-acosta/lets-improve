@@ -14,9 +14,9 @@ const Logout = ({ signout }) => {
     <>
       {/* <button onClick={signout}>logout</button> */}
       <ListItem button onClick={signout}>
-      <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
         <ListItemText primary={"Logout"} />
       </ListItem>
     </>
