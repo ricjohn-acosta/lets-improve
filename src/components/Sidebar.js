@@ -106,14 +106,6 @@ const Sidebar = ({ isOpen, showSidebar, loggedIn }) => {
         }
       >
         <Divider />
-        {/* {["About", <Logout />].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))} */}
         <ListItem button>
           <ListItemIcon>
             <InboxIcon />
@@ -128,33 +120,27 @@ const Sidebar = ({ isOpen, showSidebar, loggedIn }) => {
   const loggedOutComponents = (
     <>
       <Divider />
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <ListItem button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Home"} />
-        </ListItem>
-      </Link>
+      <ListItem component={Link} to={"/"} button>
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary={"Home"} />
+      </ListItem>
 
-      <Link to="/login" style={{ textDecoration: "none" }}>
-        <ListItem button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Login"} />
-        </ListItem>
-      </Link>
+      <ListItem component={Link} to={"/login"} button>
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary={"Login"} />
+      </ListItem>
       <Divider />
 
-      <Link to="/signup" style={{ textDecoration: "none" }}>
-        <ListItem button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Signup"} />
-        </ListItem>
-      </Link>
+      <ListItem component={Link} to={"/signup"} button>
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary={"Signup"} />
+      </ListItem>
       <Divider />
     </>
   );

@@ -60,7 +60,7 @@ const Login = ({ signIn, currentRoute }) => {
   function handleLogin(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
-    let password = e.target[2].value;
+    let password = e.target[1].value;
     console.log(e.target);
     console.log(userEmail);
     console.log(password);

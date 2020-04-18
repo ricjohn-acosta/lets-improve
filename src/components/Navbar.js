@@ -56,7 +56,7 @@ const Navbar = ({ currentRoute, isLoggedIn, showSidebar, isOpen }) => {
   const classes = useStyles();
   return (
     <>
-      <AppBar position={"static"} color={"primary"}>
+      <AppBar position={"sticky"} color={"primary"}>
         <Toolbar>
           <IconButton
             color="inherit"

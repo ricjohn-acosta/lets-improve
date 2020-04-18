@@ -22,6 +22,7 @@ const App = ({ loggedIn, emailVerified }) => {
   if (loggedIn && !emailVerified) {
     routes = (
       <>
+        <Route component={Sidebar} />
         <Route component={Navbar} />
         <Switch>
           <Route exact path="/verifyemail" component={VerifyEmail} />
@@ -34,6 +35,7 @@ const App = ({ loggedIn, emailVerified }) => {
   } else if (loggedIn && emailVerified) {
     routes = (
       <>
+        <Route component={Sidebar} />
         <Route
           render={() => (
             <Navbar currentRoute={location.pathname} isLoggedIn={loggedIn} />
