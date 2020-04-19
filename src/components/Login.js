@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
+import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -30,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-input-placeholder": { color: "#EAEAEA" },
     "&::-webkit-input": { color: "white" },
   },
-  inputPage: {},
   textfieldInput: {
     color: "#EAEAEA",
   },
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
   },
   form: {
-    padding: "30px",
+    padding: "30px"
   },
   paper: {
     background: "transparent",
@@ -59,103 +59,107 @@ const Login = ({ signIn, currentRoute }) => {
   function handleLogin(e) {
     e.preventDefault();
     let userEmail = e.target[0].value;
-    let password = e.target[2].value;
+    let password = e.target[1].value;
+    let passwordNavbar = e.target[2].value;
     console.log(e.target);
     console.log(userEmail);
     console.log(password);
 
-    signIn(userEmail, password);
+    if (currentRoute === "/login") {
+      signIn(userEmail, password)
+    } else {
+      signIn(userEmail, passwordNavbar)
+    }
   }
 
   const classes = useStyles();
   return (
     <>
-      <Paper
-        className={
-          currentRoute === "/login" ? classes.paperPage : classes.paper
-        }
-        variant={currentRoute === "/login" ? "outlined" : null}
-        elevation={currentRoute === "/login" ? 3 : 0}
-      >
-        {currentRoute === "/login" ? (
-          <div>
-            <Typography className={classes.formTitle} variant={"h3"}>
-              Log in
-            </Typography>
-          </div>
-        ) : null}
-
-        <form
-          className={currentRoute === "/login" ? classes.form : null}
-          onSubmit={handleLogin}
+      <Hidden lgDown={currentRoute === "/login" ? false : true}>
+        <Paper
+          className={
+            currentRoute === "/login" ? classes.paperPage : classes.paper
+          }
+          variant={currentRoute === "/login" ? "outlined" : null}
+          elevation={currentRoute === "/login" ? "3" : "0"}
         >
-          <TextField
-            className={currentRoute === "/login" ? null : classes.input}
-            // error={errorHandler().emailIsWrong}
-            // helperText={errorHandler().emailErrorMessage}
-            type="email"
-            name="email"
-            label="Email"
-            variant={currentRoute === "/login" ? "standard" : "outlined"}
-            size={"small"}
-            fullWidth={currentRoute === "/login" ? true : false}
-            InputProps={
-              currentRoute === "/login"
-                ? null
-                : { className: classes.textfieldInput }
-            }
-            InputLabelProps={
-              currentRoute === "/login"
-                ? null
-                : { className: classes.textfieldInput }
-            }
-            onChange={(e) => console.log(e.target.value)}
-          />
           {currentRoute === "/login" ? (
             <div>
-              <br></br>
+              <Typography className={classes.formTitle} variant={"h3"}>
+                Log in
+              </Typography>
             </div>
-          ) : (
-            <span>&nbsp;</span>
-          )}
-          <TextField
-            className={currentRoute === "/login" ? null : classes.input}
-            // error={errorHandler().passwordIsWrong}
-            // helperText={errorHandler().passwordErrorMessage}
-            type="password"
-            name="password"
-            label="Password"
-            variant={currentRoute === "/login" ? "standard" : "outlined"}
-            size={"small"}
-            fullWidth={currentRoute === "/login" ? true : false}
-            InputProps={
-              currentRoute === "/login"
-                ? null
-                : { className: classes.textfieldInput }
-            }
-            InputLabelProps={
-              currentRoute === "/login"
-                ? null
-                : { className: classes.textfieldInput }
-            }
-            onChange={(e) => console.log(e.target.value)}
-          />
-          {currentRoute === "/login" ? (
-            <div>
-              <br></br>
-            </div>
-          ) : <span>&nbsp;</span>}
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            disableElevation
-            type="submit"
+          ) : null}
+
+          <form
+            className={currentRoute === "/login" ? classes.form : null}
+            onSubmit={handleLogin}
           >
-            Login
-          </Button>
-        </form>
-      </Paper>
+            <TextField
+              className={currentRoute === "/login" ? null : classes.input}
+              // error={errorHandler().emailIsWrong}
+              // helperText={errorHandler().emailErrorMessage}
+              type="email"
+              name="email"
+              label="Email"
+              variant={currentRoute === "/login" ? "standard" : "outlined"}
+              size={"small"}
+              fullWidth={currentRoute === "/login" ? true : false}
+              InputProps={
+                currentRoute === "/login"
+                  ? null
+                  : { className: classes.textfieldInput }
+              }
+              InputLabelProps={
+                currentRoute === "/login"
+                  ? null
+                  : { className: classes.textfieldInput }
+              }
+              onChange={(e) => console.log(e.target.value)}
+            />
+
+            {currentRoute === "/login" ? <></> : <span>&nbsp;</span>}
+            <TextField
+              className={currentRoute === "/login" ? null : classes.input}
+              // error={errorHandler().passwordIsWrong}
+              // helperText={errorHandler().passwordErrorMessage}
+              type="password"
+              name="password"
+              label="Password"
+              variant={currentRoute === "/login" ? "standard" : "outlined"}
+              size={"small"}
+              fullWidth={currentRoute === "/login" ? true : false}
+              InputProps={
+                currentRoute === "/login"
+                  ? null
+                  : { className: classes.textfieldInput }
+              }
+              InputLabelProps={
+                currentRoute === "/login"
+                  ? null
+                  : { className: classes.textfieldInput }
+              }
+              onChange={(e) => console.log(e.target.value)}
+            />
+            {currentRoute === "/login" ? (
+              <div>
+                <br></br>
+              </div>
+            ) : (
+              <span>&nbsp;</span>
+            )}
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              disableElevation
+              type="submit"
+            >
+              Login
+            </Button>
+          </form>
+        </Paper>
+      </Hidden>
     </>
   );
 };

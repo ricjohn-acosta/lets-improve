@@ -10,6 +10,8 @@ import Signup from "./components/Signup";
 import VerifyEmail from "./components/VerifyEmail";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Room from "./components/Room";
 // Redux
 import { connect } from "react-redux";
 
@@ -21,6 +23,7 @@ const App = ({ loggedIn, emailVerified }) => {
   if (loggedIn && !emailVerified) {
     routes = (
       <>
+        <Route component={Sidebar} />
         <Route component={Navbar} />
         <Switch>
           <Route exact path="/verifyemail" component={VerifyEmail} />
@@ -33,27 +36,25 @@ const App = ({ loggedIn, emailVerified }) => {
   } else if (loggedIn && emailVerified) {
     routes = (
       <>
+        <Route component={Sidebar} />
         <Route
           render={() => (
             <Navbar currentRoute={location.pathname} isLoggedIn={loggedIn} />
           )}
         />
         <Switch>
-          <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
-          <Redirect to="/" />
+          <Route exact path="/rooms" component={Room} />
+          <Redirect to="/rooms" />
         </Switch>
       </>
     );
 
     // if not logged in nor email verified
-  } else {
+  } else if (!loggedIn) {
     routes = (
       <>
-        <Route
-          render={() => (
-            <Navbar currentRoute={location.pathname}/>
-          )}
-        />
+        <Route component={Sidebar} />
+        <Route render={() => <Navbar currentRoute={location.pathname} />} />
         <Switch>
           <Route exact path="/" render={() => <Home isLoggedIn={loggedIn} />} />
           <Route
