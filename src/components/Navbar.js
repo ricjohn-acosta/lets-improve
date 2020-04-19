@@ -50,14 +50,18 @@ const useStyles = makeStyles((theme) => ({
   loginForm: {
     float: "right",
   },
+  test: {
+    margin:"0px"
+  },
+
 }));
 
 const Navbar = ({ currentRoute, isLoggedIn, showSidebar, isOpen }) => {
   const classes = useStyles();
   return (
     <>
-      <AppBar position={"sticky"} color={"primary"}>
-        <Toolbar>
+      <AppBar className={classes.test} position={"sticky"} color={"primary"}>
+        <Toolbar >
           <IconButton
             color="inherit"
             aria-label="open drawer"

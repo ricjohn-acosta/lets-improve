@@ -82,18 +82,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
+  { id: "name", label: "Room name", minWidth: 170 },
+  { id: "code", label: "Description", minWidth: 100 },
   {
     id: "population",
-    label: "Population",
+    label: "Owner",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString(),
   },
   {
     id: "size",
-    label: "Size\u00a0(km\u00b2)",
+    label: "Size",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString(),
@@ -146,7 +146,7 @@ const Room = ({ isOpen }) => {
   return (
     <>
       {" "}
-      <Paper className={classes.rootPaper}>
+      <Paper className={classes.rootPaper} elevation={4}>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
