@@ -11,12 +11,13 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
+import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
     [theme.breakpoints.up("xs")]: {
       margin: "5px",
-      marginTop: "-50vw",
+      marginTop: "-30vw",
     },
 
     [theme.breakpoints.between("sm", "xl")]: {
@@ -150,6 +151,12 @@ const Signup = ({
           >
             <Button type="submit">Create account</Button>
           </ButtonGroup>
+          &nbsp;
+          <Hidden lgUp>
+            <Button component={Link} to="/login" variant="text" type="submit">
+              Or login
+            </Button>
+          </Hidden>
         </form>
       </Paper>
     </>
@@ -165,7 +172,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signUp: (email, username, password) => dispatch(signUp(email, username,password)),
+    signUp: (email, username, password) =>
+      dispatch(signUp(email, username, password)),
   };
 };
 
