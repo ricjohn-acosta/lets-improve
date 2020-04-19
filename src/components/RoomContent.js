@@ -18,6 +18,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import Button from "@material-ui/core/Button";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -45,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   rootGrid: {
     minHeight: "20vh",
-    
   },
   contentHeader: {
     height: "50%",
@@ -74,11 +74,16 @@ const useStyles = makeStyles((theme) => ({
   },
   tableHeader: {
     backgroundColor: "black",
-    color:"white"
+    color: "white",
   },
   tableFooter: {
-    color: "#EAEAEA"
-  }
+    color: "#EAEAEA",
+  },
+  buttons: {
+    root: {
+      color: "green",
+    },
+  },
 }));
 
 const columns = [
@@ -99,20 +104,38 @@ const columns = [
     format: (value) => value.toLocaleString(),
   },
   {
-    id: "density",
-    label: "Density",
+    id: "timeElapsed",
+    label: "Time elapsed",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toFixed(2),
+    format: (value) => value.toLocaleString(),
+  },
+  {
+    id: "density",
+    minWidth: 170,
+    align: "right",
+    format: () => (
+      <Button color="primary" size="large" variant="contained">
+        Join
+      </Button>
+    ),
   },
 ];
 
-function createData(name, code, population, size) {
+let button = <Button />;
+function createData(name, code, population, size, timeElapsed) {
   const density = population / size;
-  return { name, code, population, size, density };
+  return { name, code, population, size, timeElapsed, density };
 }
 
 const rows = [
+  createData(
+    "Anyone can join!!",
+    "just chilin room",
+    "mookentooken",
+    "2" + "/16",
+    "3 minutes"
+  ),
   createData("India", "IN", 1324171354, 3287263),
   createData("China", "CN", 1403500365, 9596961),
   createData("Italy", "IT", 60483973, 301340),
@@ -152,7 +175,8 @@ const Room = ({ isOpen }) => {
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <TableCell className={classes.tableHeader}
+                  <TableCell
+                    className={classes.tableHeader}
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
@@ -163,13 +187,12 @@ const Room = ({ isOpen }) => {
               </TableRow>
             </TableHead>
 
-            
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow 
+                    <TableRow
                       className={classes.tableBody}
                       hover
                       role="checkbox"
@@ -178,8 +201,13 @@ const Room = ({ isOpen }) => {
                     >
                       {columns.map((column) => {
                         const value = row[column.id];
+                        console.log(value);
                         return (
-                          <TableCell className={classes.tableBody} key={column.id} align={column.align}>
+                          <TableCell
+                            className={classes.tableBody}
+                            key={column.id}
+                            align={column.align}
+                          >
                             {column.format && typeof value === "number"
                               ? column.format(value)
                               : value}
@@ -192,6 +220,13 @@ const Room = ({ isOpen }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Button
+          onClick={() =>
+            rows.push(createData("t3es1t", "test", 1324171354, 3287263))
+          }
+        >
+          Add
+        </Button>
         <TablePagination
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
