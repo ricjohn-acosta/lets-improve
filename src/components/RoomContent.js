@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
+
 import { addRoom } from "../store/actions/rooms";
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -154,7 +157,7 @@ const rows = [
   createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-const Room = ({ addRoom }) => {
+const RoomContent = ({ addRoom }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -221,13 +224,7 @@ const Room = ({ addRoom }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button
-          onClick={() =>
-            addRoom("test1", "test2", 5)
-          }
-        >
-          Add
-        </Button>
+        <Button onClick={() => addRoom("test1", "test2", 5)}>Add</Button>
         <TablePagination
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
@@ -289,11 +286,11 @@ const Room = ({ addRoom }) => {
   );
 };
 
-// const mapStateToProps = ({ views }) => {
-//   return {
-//     isOpen: views.drawer.isOpen,
-//   };
-// };
+const mapStateToProps = ({ firestore }) => {
+  return {
+    rooms: firestore.data.rooms
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -302,4 +299,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Room);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(["rooms"])
+)(RoomContent);
