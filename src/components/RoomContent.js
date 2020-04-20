@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { addRoom } from "../store/actions/rooms";
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -153,7 +154,7 @@ const rows = [
   createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-const Room = ({ isOpen }) => {
+const Room = ({ addRoom }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -222,7 +223,7 @@ const Room = ({ isOpen }) => {
         </TableContainer>
         <Button
           onClick={() =>
-            rows.push(createData("t3es1t", "test", 1324171354, 3287263))
+            addRoom("test1", "test2", 5)
           }
         >
           Add
@@ -288,10 +289,17 @@ const Room = ({ isOpen }) => {
   );
 };
 
-const mapStateToProps = ({ views }) => {
+// const mapStateToProps = ({ views }) => {
+//   return {
+//     isOpen: views.drawer.isOpen,
+//   };
+// };
+
+const mapDispatchToProps = (dispatch) => {
   return {
-    isOpen: views.drawer.isOpen,
+    addRoom: (roomName, roomDescription) =>
+      dispatch(addRoom(roomName, roomDescription)),
   };
 };
 
-export default connect(mapStateToProps)(Room);
+export default connect(null, mapDispatchToProps)(Room);

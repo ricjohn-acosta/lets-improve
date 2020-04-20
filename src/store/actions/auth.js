@@ -22,7 +22,7 @@ export function signUp(email, username, password) {
         firestore
           .collection("users")
           .doc(res.user.uid)
-          .set({ user_name: username})
+          .set({ user_name: username })
           .then(() => {
             console.log("USER ADDED TO FIRESTORE");
           });
@@ -86,5 +86,3 @@ export function verifyEmail() {
       });
   };
 }
-
-
