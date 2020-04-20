@@ -157,7 +157,7 @@ const rows = [
   createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-const RoomContent = ({ addRoom, rooms }) => {
+const RoomContent = ({ addRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -170,11 +170,15 @@ const RoomContent = ({ addRoom, rooms }) => {
     setPage(0);
   };
 
+  if(requested && rooms) {
+    console.log(rooms.bob)
+    console.log(rooms[userId])
+  }
+
   return (
     <>
       {" "}
       <Paper className={classes.rootPaper} elevation={4}>
-        {console.log(rooms)}
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -287,9 +291,11 @@ const RoomContent = ({ addRoom, rooms }) => {
   );
 };
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ firestore, firebase }) => {
   return {
-    rooms: firestore.data.rooms
+    rooms: firestore.data.rooms,
+    userId: firebase.auth.uid,
+    requested: firestore.status.requested
   };
 };
 
@@ -302,5 +308,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(["rooms"])
+  firestoreConnect((props) => ["rooms"])
 )(RoomContent);
