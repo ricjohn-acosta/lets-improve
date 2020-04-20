@@ -157,7 +157,7 @@ const rows = [
   createData("Brazil", "BR", 210147125, 8515767),
 ];
 
-const RoomContent = ({ addRoom }) => {
+const RoomContent = ({ addRoom, rooms }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -174,6 +174,7 @@ const RoomContent = ({ addRoom }) => {
     <>
       {" "}
       <Paper className={classes.rootPaper} elevation={4}>
+        {console.log(rooms)}
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
