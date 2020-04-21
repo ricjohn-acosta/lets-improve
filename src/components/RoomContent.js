@@ -126,41 +126,59 @@ const columns = [
   },
 ];
 
-let button = <Button />;
 function createData(name, code, population, size, timeElapsed) {
   const density = population / size;
   return { name, code, population, size, timeElapsed, density };
 }
 
 const rows = [
-  createData(
-    "Anyone can join!!",
-    "just chilin room",
-    "mookentooken",
-    "2" + "/16",
-    "3 minutes"
-  ),
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
+  // createData(
+  //   "Anyone can join!!",
+  //   "just chilin room",
+  //   "mookentooken",
+  //   "2" + "/16",
+  //   "3 minutes"
+  // ),
+  // createData("India", "IN", 1324171354, 3287263),
+  // createData("China", "CN", 1403500365, 9596961),
+  // createData("Italy", "IT", 60483973, 301340),
+  // createData("United States", "US", 327167434, 9833520),
+  // createData("Canada", "CA", 37602103, 9984670),
+  // createData("Australia", "AU", 25475400, 7692024),
+  // createData("Germany", "DE", 83019200, 357578),
+  // createData("Ireland", "IE", 4857000, 70273),
+  // createData("Mexico", "MX", 126577691, 1972550),
+  // createData("Japan", "JP", 126317000, 377973),
+  // createData("France", "FR", 67022000, 640679),
+  // createData("United Kingdom", "GB", 67545757, 242495),
+  // createData("Russia", "RU", 146793744, 17098246),
+  // createData("Nigeria", "NG", 200962417, 923768),
+  // createData("Brazil", "BR", 210147125, 8515767),
+  {
+    name: "test",
+    code: "test",
+    population: "test",
+    size: "test",
+    timeElapsed: "test",
+  },
 ];
 
 const RoomContent = ({ addRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [room, setRoom] = React.useState({
+    data: [
+      {
+        name: "test",
+        code: "test",
+        population: "test",
+        size: "test",
+        timeElapsed: "test",
+      },
+    ],
+  });
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -170,9 +188,23 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     setPage(0);
   };
 
-  if(requested && rooms) {
-    console.log(rooms.bob)
-    console.log(rooms[userId])
+  const handleAddRoom = (event) => {
+    setRoom((prevState) => {
+      const data = [...prevState.data];
+      data.push({
+        name: "test1",
+        code: "test1",
+        population: "test1",
+        size: "test1",
+        timeElapsed: "test1",
+      });
+      return { ...prevState, data };
+    });
+  };
+
+  if (requested && rooms) {
+    console.log(rooms.bob);
+    console.log(rooms[userId]);
   }
 
   return (
@@ -197,7 +229,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
             </TableHead>
 
             <TableBody>
-              {rows
+              {room.data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -229,7 +261,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button onClick={() => addRoom("test1", "test2", 5)}>Add</Button>
+        <Button onClick={() => handleAddRoom()}>Add</Button>
         <TablePagination
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
@@ -295,7 +327,7 @@ const mapStateToProps = ({ firestore, firebase }) => {
   return {
     rooms: firestore.data.rooms,
     userId: firebase.auth.uid,
-    requested: firestore.status.requested
+    requested: firestore.status.requested,
   };
 };
 
