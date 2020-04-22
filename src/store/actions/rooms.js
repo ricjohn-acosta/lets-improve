@@ -1,9 +1,9 @@
 import * as actions from "./actionTypes";
 
 export function addRoom(roomName, roomDescription, roomSize) {
-  return (dispatch, getState, { getFirestore }) => {
+  return (dispatch, getState, { getFirebase }) => {
     dispatch({ type: actions.ADD_ROOM_START });
-    const firestore = getFirestore();
+    const firestore = getFirebase().firestore();
     const userId = getState().firebase.auth.uid;
     console.log(userId);
     // Create rooms collection

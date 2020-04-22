@@ -7,7 +7,7 @@ export function signUp(email, username, password) {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     dispatch({ type: actions.AUTH_START, payload: true });
     const firebase = getFirebase();
-    const firestore = getFirestore();
+    const firestore = getFirebase().firestore();
 
     firebase
       .auth()

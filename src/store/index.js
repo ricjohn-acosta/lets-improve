@@ -20,7 +20,7 @@ const middlewareEnhancer = applyMiddleware(
 // const rrfEnhancer = reactReduxFirebase(firebase, rrfConfig);
 // const reduxFirestoreEnhancer = reduxFirestore(firebase);
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
 // Finally, create store.
 const store = createStore(

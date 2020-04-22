@@ -24,6 +24,8 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
 
+import { useSelector } from "react-redux";
+import { useFirestoreConnect } from "react-redux-firebase";
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -91,8 +93,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-  { id: "name", label: "Room name", minWidth: 170 },
-  { id: "description", label: "Description", minWidth: 100 },
+  { id: "room_description", label: "Room name", minWidth: 170 },
+  { id: "room_name", label: "Description", minWidth: 100 },
   {
     id: "owner",
     label: "Owner",
@@ -167,6 +169,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [dataReceived, setDataReceived] = React.useState(false);
   const [room, setRoom] = React.useState({
     data: [
       {
@@ -184,7 +187,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     ],
   });
 
-  console.log(rowsPerPage)
+  console.log(room.data);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -194,7 +197,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     setPage(0);
   };
 
-  const handleAddRoom = (event) => {
+  const handleAddRoom = () => {
     setRoom((prevState) => {
       const data = [...prevState.data];
       data.push({
@@ -213,10 +216,65 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     });
   };
 
-  if (requested && rooms) {
-    console.log(rooms.bob);
-    console.log(rooms[userId]);
-  }
+  // const handleData = () => {
+  //   if (requested && rooms) {
+  //     setDataReceived(true);
+  //   }
+  // };
+
+  // handleData();
+  // // const populateList = () => {
+  // //   handleData()
+  // //   if(dataReceived) {
+  // //     let plsWork = {
+  // //       data: Object.values(rooms)
+  // //     }
+  // //     return plsWork
+  // //   }
+  // // }
+
+  // console.log("populateList", populateList())
+
+  const tableBody = () => {
+    if (requested && rooms) {
+      let testing = {
+        data: Object.values(rooms),
+      };
+      return (
+        <TableBody>
+          {testing.data
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => {
+              return (
+                <TableRow
+                  className={classes.tableBody}
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.code}
+                >
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    console.log(value);
+                    return (
+                      <TableCell
+                        className={classes.tableBody}
+                        key={column.id}
+                        align={column.align}
+                      >
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      );
+    }
+  };
 
   return (
     <>
@@ -239,7 +297,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
               </TableRow>
             </TableHead>
 
-            <TableBody>
+            {/* <TableBody>
               {room.data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
@@ -269,10 +327,11 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
                     </TableRow>
                   );
                 })}
-            </TableBody>
+            </TableBody> */}
+            {tableBody()}
           </Table>
         </TableContainer>
-        <Button onClick={() => handleAddRoom()}>Add</Button>
+        <Button onClick={() => addRoom("test1","test", "test")}>Create room</Button>
         <TablePagination
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
@@ -284,52 +343,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      {/* <Paper className={classes.rootPaper} elevation={4}>
-        <Grid container className={classes.rootGrid}>
-          <Grid
-            component={Box}
-            className={classes.contentHeader}
-            borderBottom={1}
-            item
-            container
-          >
-            <Grid item className={classes.textHeader} xs={3} sm={2}>
-              <Typography>Room name</Typography>
-            </Grid>
-            <Grid item className={classes.textHeader} xs={3} sm={2}>
-              <Typography>Description</Typography>
-            </Grid>
-            <Grid item className={classes.textHeader} xs={3} sm={2}>
-              Owner
-            </Grid>
-            <Grid item className={classes.textHeader} xs={3} sm={2}>
-              Time elapsed
-            </Grid>
-          </Grid>
-
-          <Grid
-            component={Box}
-            className={classes.userRooms}
-            borderBottom={1}
-            item
-            container
-          >
-            <List className={classes.flexContainer}>
-              <ListItem className={classes.listItem} >
-                <ListItemText primary={"About"} />
-              </ListItem>
-
-              <ListItem className={classes.listItem}>
-                <ListItemText primary={"About"} />
-              </ListItem>
-
-              <ListItem>
-                <ListItemText primary={"About"} />
-              </ListItem>
-            </List>
-          </Grid>
-        </Grid>
-      </Paper> */}
     </>
   );
 };
@@ -339,13 +352,14 @@ const mapStateToProps = ({ firestore, firebase }) => {
     rooms: firestore.data.rooms,
     userId: firebase.auth.uid,
     requested: firestore.status.requested,
+    requesting: firestore.status.requesting,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addRoom: (roomName, roomDescription) =>
-      dispatch(addRoom(roomName, roomDescription)),
+    addRoom: (roomName, roomDescription, roomSize) =>
+      dispatch(addRoom(roomName, roomDescription, roomSize)),
   };
 };
 
