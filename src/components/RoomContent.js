@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
+import CreateRoomForm from "./CreateRoomForm"
 
 import { addRoom } from "../store/actions/rooms";
 
@@ -23,6 +24,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
+import TableFooter from '@material-ui/core/TableFooter';
 
 import { useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
@@ -93,10 +95,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-  { id: "room_description", label: "Room name", minWidth: 170 },
-  { id: "room_name", label: "Description", minWidth: 100 },
+  { id: "room_name", label: "Room name", minWidth: 170 },
+  { id: "room_description", label: "Description", minWidth: 100 },
   {
-    id: "owner",
+    id: "room_owner",
     label: "Owner",
     minWidth: 170,
     align: "right",
@@ -169,7 +171,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [dataReceived, setDataReceived] = React.useState(false);
   const [room, setRoom] = React.useState({
     data: [
       {
@@ -197,43 +198,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     setPage(0);
   };
 
-  const handleAddRoom = () => {
-    setRoom((prevState) => {
-      const data = [...prevState.data];
-      data.push({
-        name: "test1",
-        description: "test1",
-        owner: "test1",
-        size: "test1",
-        timeElapsed: "test1",
-        button: (
-          <Button color="primary" size="large" variant="contained">
-            Join
-          </Button>
-        ),
-      });
-      return { ...prevState, data };
-    });
-  };
-
-  // const handleData = () => {
-  //   if (requested && rooms) {
-  //     setDataReceived(true);
-  //   }
-  // };
-
-  // handleData();
-  // // const populateList = () => {
-  // //   handleData()
-  // //   if(dataReceived) {
-  // //     let plsWork = {
-  // //       data: Object.values(rooms)
-  // //     }
-  // //     return plsWork
-  // //   }
-  // // }
-
-  // console.log("populateList", populateList())
 
   const tableBody = () => {
     if (requested && rooms) {
@@ -296,42 +260,10 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
                 ))}
               </TableRow>
             </TableHead>
-
-            {/* <TableBody>
-              {room.data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      className={classes.tableBody}
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        console.log(value);
-                        return (
-                          <TableCell
-                            className={classes.tableBody}
-                            key={column.id}
-                            align={column.align}
-                          >
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody> */}
             {tableBody()}
           </Table>
         </TableContainer>
-        <Button onClick={() => addRoom("test1","test", "test")}>Create room</Button>
+        <CreateRoomForm />
         <TablePagination
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
@@ -341,7 +273,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        ></TablePagination>
       </Paper>
     </>
   );
@@ -365,5 +297,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect((props) => ["rooms"])
+  // firestoreConnect((props) => ["rooms"])
 )(RoomContent);
