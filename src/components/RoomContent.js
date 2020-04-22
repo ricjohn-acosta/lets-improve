@@ -92,9 +92,9 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
   { id: "name", label: "Room name", minWidth: 170 },
-  { id: "code", label: "Description", minWidth: 100 },
+  { id: "description", label: "Description", minWidth: 100 },
   {
-    id: "population",
+    id: "owner",
     label: "Owner",
     minWidth: 170,
     align: "right",
@@ -115,14 +115,14 @@ const columns = [
     format: (value) => value.toLocaleString(),
   },
   {
-    id: "density",
+    id: "button",
     minWidth: 170,
     align: "right",
-    format: () => (
-      <Button color="primary" size="large" variant="contained">
-        Join
-      </Button>
-    ),
+    // format: () => (
+    //   <Button color="primary" size="large" variant="contained">
+    //     Join
+    //   </Button>
+    // ),
   },
 ];
 
@@ -171,14 +171,20 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     data: [
       {
         name: "test",
-        code: "test",
-        population: "test",
+        description: "asd",
+        owner: "test",
         size: "test",
         timeElapsed: "test",
+        button: (
+          <Button color="primary" size="large" variant="contained">
+            Join
+          </Button>
+        ),
       },
     ],
   });
 
+  console.log(rowsPerPage)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -193,10 +199,15 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
       const data = [...prevState.data];
       data.push({
         name: "test1",
-        code: "test1",
-        population: "test1",
+        description: "test1",
+        owner: "test1",
         size: "test1",
         timeElapsed: "test1",
+        button: (
+          <Button color="primary" size="large" variant="contained">
+            Join
+          </Button>
+        ),
       });
       return { ...prevState, data };
     });
@@ -266,7 +277,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={room.data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
