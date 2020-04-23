@@ -8,9 +8,11 @@ import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100vw",
+    width: "100%",
     height: "100vh",
     backgroundColor: "#2b2b2b",
+    overflowX: "hidden"
+
   },
 }));
 
@@ -24,7 +26,6 @@ const Room = ({ isOpen }) => {
         <Grid item container sm={8}>
           <RoomContent />
         </Grid>
-        <Grid item sm={2} />
       </Grid>
     </>
   );
