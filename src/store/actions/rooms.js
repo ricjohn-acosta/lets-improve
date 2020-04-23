@@ -16,7 +16,7 @@ export function addRoom(roomName, roomDescription, roomSize) {
         firestore
           .collection("rooms")
           .doc(userId)
-          .set({ room_name: roomName, room_description: roomDescription, room_size: roomSize, room_owner: getState().firebase.auth.displayName });
+          .set({ room_name: roomName, room_description: roomDescription, room_size: roomSize, room_owner: getState().firebase.auth.displayName});
         dispatch({ type: actions.ADD_ROOM_SUCCESS });
       })
       .catch((err) => {

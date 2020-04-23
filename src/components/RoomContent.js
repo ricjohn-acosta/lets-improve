@@ -94,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
       color: "green",
     },
   },
+
 }));
 
 const columns = [
@@ -129,6 +130,7 @@ const columns = [
     //     Join
     //   </Button>
     // ),
+    format: (value) => value.toLocaleString(),
   },
 ];
 
@@ -205,9 +207,28 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
       let testing = {
         data: Object.values(rooms),
       };
+
+      let newData = testing.data.map((room) => {
+        return {
+          ...room,
+          button: (
+            <Button
+            className={classes.joinBtn}
+              onClick={() => console.log(room.room_name)}
+              color={"primary"}
+              variant={"contained"}
+            >
+              JOIN
+            </Button>
+          ),
+        };
+      });
+
+      console.log(newData);
+      console.log(testing.data);
       return (
         <TableBody>
-          {testing.data
+          {newData
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => {
               return (
@@ -243,9 +264,13 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
 
   const createRoomButton = () => {
     if (requested && rooms) {
-      return rooms[userId] ? null : <CreateRoomForm />
+      if (rooms[userId]) {
+        return null;
+      }
+    } else {
+      return <CreateRoomForm />;
     }
-  }
+  };
 
   return (
     <>
