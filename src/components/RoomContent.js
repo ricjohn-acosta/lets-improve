@@ -81,6 +81,8 @@ const useStyles = makeStyles((theme) => ({
   tableBody: {
     backgroundColor: "#404040",
     color: "#EAEAEA",
+    paddingRight: "4",
+    paddingLeft: "5"
   },
   tableHeader: {
     backgroundColor: "black",
