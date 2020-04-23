@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
-import CreateRoomForm from "./CreateRoomForm"
+import CreateRoomForm from "./CreateRoomForm";
 
 import { addRoom } from "../store/actions/rooms";
 
@@ -24,10 +24,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
-import TableFooter from '@material-ui/core/TableFooter';
+import TableFooter from "@material-ui/core/TableFooter";
+import { Hidden } from "@material-ui/core";
 
 import { useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -105,7 +107,7 @@ const columns = [
     format: (value) => value.toLocaleString(),
   },
   {
-    id: "size",
+    id: "room_size",
     label: "Size",
     minWidth: 170,
     align: "right",
@@ -198,7 +200,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     setPage(0);
   };
 
-
   const tableBody = () => {
     if (requested && rooms) {
       let testing = {
@@ -240,6 +241,12 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     }
   };
 
+  const createRoomButton = () => {
+    if (requested && rooms) {
+      return rooms[userId] ? null : <CreateRoomForm />
+    }
+  }
+
   return (
     <>
       {" "}
@@ -263,7 +270,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
             {tableBody()}
           </Table>
         </TableContainer>
-        <CreateRoomForm />
+        {createRoomButton()}
         <TablePagination
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
@@ -288,14 +295,14 @@ const mapStateToProps = ({ firestore, firebase }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addRoom: (roomName, roomDescription, roomSize) =>
-      dispatch(addRoom(roomName, roomDescription, roomSize)),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     addRoom: (roomName, roomDescription, roomSize) =>
+//       dispatch(addRoom(roomName, roomDescription, roomSize)),
+//   };
+// };
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  // firestoreConnect((props) => ["rooms"])
+  connect(mapStateToProps, null),
+  firestoreConnect((props) => ["rooms"])
 )(RoomContent);

@@ -1,4 +1,7 @@
 import React from "react";
+import { addRoom } from "../store/actions/rooms";
+import { connect } from "react-redux";
+
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Modal from "@material-ui/core/Modal";
@@ -29,17 +32,19 @@ const useStyles = makeStyles((theme) => ({
   },
   roomSizeTitle: {
     position: "relative",
-    right: "5%",
+    right: "-0.5%",
   },
-  createRoom: {
+  submitBtn: {
     position: "relative",
-    left: "20%",
+    left: "30%",
   },
 }));
 
-const CreateRoomForm = () => {
+const CreateRoomForm = ({addRoom}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [size, setRoomSize] = React.useState(1);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -52,9 +57,14 @@ const CreateRoomForm = () => {
     e.preventDefault();
     let roomName = e.target[0].value;
     let roomDescription = e.target[1].value;
-    let roomSize = e.target[2].value;
+    let roomSize = size;
+
+    addRoom(roomName, roomDescription, roomSize)
     console.log(roomName);
+    console.log(roomDescription);
+    console.log(roomSize);
   }
+
   return (
     <>
       <Button onClick={handleOpen} children={CreateRoomForm}>
@@ -75,7 +85,7 @@ const CreateRoomForm = () => {
         <Fade in={open}>
           <Paper className={classes.paper}>
             <form onSubmit={handleRoomCreation}>
-              <Typography className={classes.roomSizeTitle}>
+              <Typography className={classes.roomSizeTitle} variant={"h5"}>
                 Room details
               </Typography>
               <TextField
@@ -93,17 +103,17 @@ const CreateRoomForm = () => {
               <br />
               <div className={classes.roomSize}>
                 <Typography className={classes.roomSizeTitle}>
-                  Number of people
+                  Max room size
                 </Typography>
-                <IconButton>
-                  <AddCircleIcon />
-                </IconButton>
-                1
-                <IconButton>
+                <IconButton onClick={() => setRoomSize(size - 1)} disabled={size <= 0 ? true : false}>
                   <RemoveCircleIcon />
                 </IconButton>
+                {size}
+                <IconButton onClick={() => setRoomSize(size + 1)} disabled={size >= 4 ? true : false}>
+                  <AddCircleIcon />
+                </IconButton>
               </div>
-              <Button className={classes.createRoom}>Create room!</Button>
+              <Button className={classes.submitBtn} onClick={handleClose} type="submit">SUBMIT</Button>
             </form>
           </Paper>
         </Fade>
@@ -112,4 +122,12 @@ const CreateRoomForm = () => {
   );
 };
 
-export default CreateRoomForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addRoom: (roomName, roomDescription, roomSize) =>
+      dispatch(addRoom(roomName, roomDescription, roomSize)),
+  };
+};
+
+
+export default connect(null, mapDispatchToProps)(CreateRoomForm);
