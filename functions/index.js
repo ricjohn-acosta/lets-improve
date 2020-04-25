@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
-const admin = require('firebase-admin');
+const firebase = require("firebase/app");
+const admin = require("firebase-admin");
 admin.initializeApp();
 
 // // Create and Deploy Your First Cloud Functions
@@ -8,6 +9,20 @@ admin.initializeApp();
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD3crIc4YzqQs5Vzr2F5DN7TzkTx00hd4s",
+  authDomain: "lets-improve.firebaseapp.com",
+  databaseURL: "https://lets-improve.firebaseio.com",
+  projectId: "lets-improve",
+  storageBucket: "lets-improve.appspot.com",
+  messagingSenderId: "396538697524",
+  appId: "1:396538697524:web:5b5da73b4b730eb5837761",
+  measurementId: "G-JNDQPS9W79",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database()
 
 exports.myCloudTimer = functions.database
   .ref("/startTimerRequest/")
