@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import CreateRoomForm from "./CreateRoomForm";
+import moment from "moment";
 
 import { addRoom } from "../store/actions/rooms";
 
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#404040",
     color: "#EAEAEA",
     paddingRight: "4",
-    paddingLeft: "5"
+    paddingLeft: "5",
   },
   tableHeader: {
     backgroundColor: "black",
@@ -96,7 +97,6 @@ const useStyles = makeStyles((theme) => ({
       color: "green",
     },
   },
-
 }));
 
 const columns = [
@@ -177,24 +177,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [room, setRoom] = React.useState({
-    data: [
-      {
-        name: "test",
-        description: "asd",
-        owner: "test",
-        size: "test",
-        timeElapsed: "test",
-        button: (
-          <Button color="primary" size="large" variant="contained">
-            Join
-          </Button>
-        ),
-      },
-    ],
-  });
 
-  console.log(room.data);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -204,33 +187,60 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     setPage(0);
   };
 
+  const fetchData = () => {
+    let testing = {
+      data: Object.values(rooms),
+    };
+
+    let newData = testing.data.map((room) => {
+      return {
+        ...room,
+        button: (
+          <Button
+            className={classes.joinBtn}
+            onClick={() => console.log(room.room_name)}
+            color={"primary"}
+            variant={"contained"}
+          >
+            JOIN
+          </Button>
+        ),
+        timeElapsed: moment().from(room.timeElapsed, true),
+      };
+    });
+
+    return newData;
+  };
+
   const tableBody = () => {
     if (requested && rooms) {
-      let testing = {
-        data: Object.values(rooms),
-      };
+      // let testing = {
+      //   data: Object.values(rooms),
+      // };
 
-      let newData = testing.data.map((room) => {
-        return {
-          ...room,
-          button: (
-            <Button
-            className={classes.joinBtn}
-              onClick={() => console.log(room.room_name)}
-              color={"primary"}
-              variant={"contained"}
-            >
-              JOIN
-            </Button>
-          ),
-        };
-      });
+      // let newData = testing.data.map((room) => {
+      //   return {
+      //     ...room,
+      //     button: (
+      //       <Button
+      //         className={classes.joinBtn}
+      //         onClick={() => console.log(room.room_name)}
+      //         color={"primary"}
+      //         variant={"contained"}
+      //       >
+      //         JOIN
+      //       </Button>
+      //     ),
+      //     timeElapsed: createTime() - room.timeElapsed,
+      //   };
+      // });
 
-      console.log(newData);
-      console.log(testing.data);
+      // console.log(newData);
+      // console.log(testing.data);
+      console.log(fetchData());
       return (
         <TableBody>
-          {newData
+          {fetchData()
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => {
               return (
@@ -274,6 +284,16 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     }
   };
 
+  const createTime = () => {
+    let currentTime = new Date().getUTCMinutes();
+    return currentTime;
+  };
+
+  const testDate = () => {
+    let currentTime = moment().format();
+    return currentTime;
+  };
+
   return (
     <>
       {" "}
@@ -302,12 +322,14 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={room.data.length}
+          count={requested && rooms ? fetchData().length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         ></TablePagination>
+        {createTime()}
+        {console.log(moment().from(testDate()))}
       </Paper>
     </>
   );

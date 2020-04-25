@@ -60,7 +60,11 @@ exports.createCollection = functions.firestore
   .onCreate(() => {
     return admin
       .firestore()
-      .listCollections("timers")
-      .doc("test1")
+      .collection("timers")
+      .doc("timers_created")
       .set({ test2: "test3" });
   });
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
