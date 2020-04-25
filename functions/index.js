@@ -6,12 +6,13 @@ const functions = require("firebase-functions");
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+
 exports.myCloudTimer = functions.database
   .ref("/startTimerRequest/")
   .onCreate((event) => {
     return db.ref("cloudTimer/timeInMs").once("value", (snap) => {
       if (!snap.exists()) {
-        return Promise.reject(err);
+        return Promise.reject(new Error("error"));
       }
 
       let timeInSeconds = snap.val() / 1000;
@@ -21,7 +22,8 @@ exports.myCloudTimer = functions.database
         db.ref("cloudTimer/observableTime").set(elapsedTime);
       })
         .then((totalTime) => {
-          return console.log("Timer of " + totalTime + " has finished.");
+          console.log("Timer of " + totalTime + " has finished.");
+          return null;
         })
         .then(() => new Promise((resolve) => setTimeout(resolve, 1000)))
         .then(() => event.data.ref.remove())
@@ -32,7 +34,7 @@ exports.myCloudTimer = functions.database
 function functionTimer(seconds, call) {
   return new Promise((resolve, reject) => {
     if (seconds > 300) {
-      reject(err);
+      reject(new Error("error"));
       return;
     }
     let interval = setInterval(onInterval, 1000);
