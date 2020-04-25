@@ -55,8 +55,12 @@ admin.initializeApp();
 //   });
 // }
 
-exports.testFunction = functions.database
-  .ref("/createData/")
-  .onCreate((snapshot, context) => {
-    return admin.database().ref("functions/works");
+exports.createCollection = functions.firestore
+  .document("users/{test}")
+  .onCreate(() => {
+    return admin
+      .firestore()
+      .listCollections("timers")
+      .doc("test1")
+      .set({ test2: "test3" });
   });
