@@ -21,13 +21,10 @@ const firebaseConfig = {
   measurementId: "G-JNDQPS9W79",
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database()
-
 exports.myCloudTimer = functions.database
   .ref("/startTimerRequest/")
   .onCreate((event) => {
-    return db.ref("cloudTimer/timeInMs").once("value", (snap) => {
+    return admin.database().ref("cloudTimer/timeInMs").once("value", (snap) => {
       if (!snap.exists()) {
         return Promise.reject(new Error("error"));
       }
@@ -36,7 +33,7 @@ exports.myCloudTimer = functions.database
       console.log("Cloud Timer was Started: " + timeInSeconds);
 
       return functionTimer(timeInSeconds, (elapsedTime) => {
-        db.ref("cloudTimer/observableTime").set(elapsedTime);
+        admin.database().ref("cloudTimer/observableTime").set(elapsedTime);
       })
         .then((totalTime) => {
           console.log("Timer of " + totalTime + " has finished.");
