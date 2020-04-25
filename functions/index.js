@@ -1,5 +1,5 @@
 const functions = require("firebase-functions");
-const firebase = require("firebase/app");
+const firebase = require("firebase/database");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
