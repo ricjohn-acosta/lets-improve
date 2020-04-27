@@ -15,7 +15,7 @@ export function signUp(email, username, password) {
       .then((res) => {
         const currentUser = firebase.auth().currentUser;
         currentUser.sendEmailVerification().then(() => {
-          currentUser.updateProfile({ displayName: username }).then(() => {
+          currentUser.updateProfile({ displayName: username, in_room: false }).then(() => {
             console.log("VERIFICATION EMAIL SENT AND DISPLAY NAME SET");
           });
         });

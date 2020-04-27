@@ -5,7 +5,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import CreateRoomForm from "./CreateRoomForm";
 import moment from "moment";
 
-import { addRoom } from "../store/actions/rooms";
+import { joinRoom } from "../store/actions/rooms";
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -106,29 +106,21 @@ const columns = [
   },
 ];
 
-const RoomContent = ({ addRoom, rooms, userId, requested }) => {
+const RoomContent = ({ joinRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentTime, setCurrentTime] = React.useState(moment());
 
   // useEffect(() => {
-  //   let interval = setCurrentTime(setInterval(() => moment(), 100000));
+  //   let interval = setInterval(() => {
+  //     setCurrentTime(moment());
+  //   }, 1800000);
 
   //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // });
-
-  useEffect(() => {
-    let interval = setInterval(() => {
-      setCurrentTime(moment());
-    }, 60000);
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, []);
+  //     clearInterval(interval)
+  //   }
+  // }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -140,6 +132,8 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
   };
 
   const fetchData = () => {
+    console.log(rooms);
+
     let fetchedData = {
       data: Object.values(rooms),
     };
@@ -150,7 +144,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
         button: (
           <Button
             className={classes.joinBtn}
-            onClick={() => console.log(room.room_name)}
+            onClick={() => joinRoom(room.id)}
             color={"primary"}
             variant={"contained"}
           >
@@ -182,7 +176,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
                 >
                   {columns.map((column) => {
                     const value = row[column.id];
-                    console.log(value);
                     return (
                       <TableCell
                         className={classes.tableBody}
@@ -205,8 +198,11 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
 
   const createRoomButton = () => {
     if (requested && rooms) {
-      if (rooms[userId]) {
+      console.log(rooms.userId);
+      if (rooms.hasOwnProperty(userId)) {
         return null;
+      } else {
+        return <CreateRoomForm />;
       }
     } else {
       return <CreateRoomForm />;
@@ -247,7 +243,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         ></TablePagination>
-        {console.log(currentTime)}
       </Paper>
     </>
   );
@@ -262,7 +257,13 @@ const mapStateToProps = ({ firestore, firebase }) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    joinRoom: (roomOwner) => dispatch(joinRoom(roomOwner)),
+  };
+};
+
 export default compose(
-  connect(mapStateToProps, null),
-  firestoreConnect((props) => ["rooms"])
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => [{ collection: "rooms" }])
 )(RoomContent);

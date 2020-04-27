@@ -2,6 +2,8 @@ import React from "react";
 import { addRoom } from "../store/actions/rooms";
 import { connect } from "react-redux";
 
+import { joinRoom } from "../store/actions/rooms";
+
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Modal from "@material-ui/core/Modal";
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateRoomForm = ({addRoom}) => {
+const CreateRoomForm = ({ addRoom, userId }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [size, setRoomSize] = React.useState(1);
@@ -59,7 +61,7 @@ const CreateRoomForm = ({addRoom}) => {
     let roomDescription = e.target[1].value;
     let roomSize = size;
 
-    addRoom(roomName, roomDescription, roomSize)
+    addRoom(roomName, roomDescription, roomSize);
     console.log(roomName);
     console.log(roomDescription);
     console.log(roomSize);
@@ -105,15 +107,29 @@ const CreateRoomForm = ({addRoom}) => {
                 <Typography className={classes.roomSizeTitle}>
                   Max room size
                 </Typography>
-                <IconButton onClick={() => setRoomSize(size - 1)} disabled={size <= 0 ? true : false}>
+                <IconButton
+                  onClick={() => setRoomSize(size - 1)}
+                  disabled={size <= 0 ? true : false}
+                >
                   <RemoveCircleIcon />
                 </IconButton>
                 {size}
-                <IconButton onClick={() => setRoomSize(size + 1)} disabled={size >= 4 ? true : false}>
+                <IconButton
+                  onClick={() => setRoomSize(size + 1)}
+                  disabled={size >= 4 ? true : false}
+                >
                   <AddCircleIcon />
                 </IconButton>
               </div>
-              <Button className={classes.submitBtn} onClick={handleClose} type="submit">SUBMIT</Button>
+              <Button
+                className={classes.submitBtn}
+                onClick={() => {
+                  handleClose();
+                }}
+                type="submit"
+              >
+                SUBMIT
+              </Button>
             </form>
           </Paper>
         </Fade>
@@ -122,12 +138,18 @@ const CreateRoomForm = ({addRoom}) => {
   );
 };
 
+const mapStateToProps = ({ firebase, rooms }) => {
+  return {
+    userId: firebase.auth.uid,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addRoom: (roomName, roomDescription, roomSize) =>
       dispatch(addRoom(roomName, roomDescription, roomSize)),
+    joinRoom: (roomOwner) => dispatch(joinRoom(roomOwner)),
   };
 };
 
-
-export default connect(null, mapDispatchToProps)(CreateRoomForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRoomForm);
