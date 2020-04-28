@@ -3,7 +3,9 @@ import "./App.css";
 import { useLocation } from "react-router-dom";
 
 // React-router
-import { Route, Switch, Redirect } from "react-router";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 // Components
 import Home from "./components/Home";
 import Signup from "./components/Signup";
@@ -12,11 +14,13 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Room from "./components/Room";
+import UserRoom from "./components/UserRoom";
 // Redux
 import { connect } from "react-redux";
 
 const App = ({ loggedIn, emailVerified }) => {
   let location = useLocation();
+  let { owner } = useParams();
   let routes;
 
   // if logged in but email is not verified
@@ -44,6 +48,9 @@ const App = ({ loggedIn, emailVerified }) => {
         />
         <Switch>
           <Route exact path="/rooms" component={Room} />
+          <Route exact path="/rooms/:owner">
+            <UserRoom />
+          </Route>
           <Redirect to="/rooms" />
         </Switch>
       </>

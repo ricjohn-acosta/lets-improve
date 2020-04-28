@@ -69,6 +69,13 @@ export function joinRoom(userId) {
       .then(() => {
         dispatch({ type: actions.JOIN_ROOM_SUCCESS });
         console.log("USER JOINED ROOM");
+        firestore
+          .collection("users")
+          .doc(loggedinUser)
+          .update({ in_room: true })
+          .then(() => {
+            console.log("USER STATE CHANGED");
+          });
       })
       .catch((err) => {
         console.log(err);

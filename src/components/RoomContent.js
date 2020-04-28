@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { Link } from "react-router-dom";
+
 import { firestoreConnect } from "react-redux-firebase";
 import CreateRoomForm from "./CreateRoomForm";
 import moment from "moment";
@@ -142,6 +144,8 @@ const RoomContent = ({ joinRoom, rooms, userId, requested }) => {
       return {
         ...room,
         button: (
+          <Link to={`/rooms/${room.room_owner}`}>
+          
           <Button
             className={classes.joinBtn}
             onClick={() => joinRoom(room.id)}
@@ -150,6 +154,7 @@ const RoomContent = ({ joinRoom, rooms, userId, requested }) => {
           >
             JOIN
           </Button>
+          </Link>
         ),
         timeElapsed: currentTime.from(room.timeElapsed, true),
       };
