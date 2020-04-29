@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import { Link } from "react-router-dom";
+
 import { firestoreConnect } from "react-redux-firebase";
 import CreateRoomForm from "./CreateRoomForm";
+import moment from "moment";
 
-import { addRoom } from "../store/actions/rooms";
+import { joinRoom } from "../store/actions/rooms";
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -24,27 +27,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
-import TableFooter from "@material-ui/core/TableFooter";
-import { Hidden } from "@material-ui/core";
-
-import { useSelector } from "react-redux";
-import { useFirestoreConnect } from "react-redux-firebase";
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  head: {
-    color: "white",
-  },
-}))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
   rootPaper: {
@@ -82,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#404040",
     color: "#EAEAEA",
     paddingRight: "4",
-    paddingLeft: "5"
+    paddingLeft: "5",
   },
   tableHeader: {
     backgroundColor: "black",
@@ -96,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
       color: "green",
     },
   },
-
 }));
 
 const columns = [
@@ -107,94 +88,42 @@ const columns = [
     label: "Owner",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString(),
   },
   {
     id: "room_size",
     label: "Size",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString(),
   },
   {
     id: "timeElapsed",
     label: "Time elapsed",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString(),
   },
   {
     id: "button",
     minWidth: 170,
     align: "right",
-    // format: () => (
-    //   <Button color="primary" size="large" variant="contained">
-    //     Join
-    //   </Button>
-    // ),
-    format: (value) => value.toLocaleString(),
   },
 ];
 
-function createData(name, code, population, size, timeElapsed) {
-  const density = population / size;
-  return { name, code, population, size, timeElapsed, density };
-}
-
-const rows = [
-  // createData(
-  //   "Anyone can join!!",
-  //   "just chilin room",
-  //   "mookentooken",
-  //   "2" + "/16",
-  //   "3 minutes"
-  // ),
-  // createData("India", "IN", 1324171354, 3287263),
-  // createData("China", "CN", 1403500365, 9596961),
-  // createData("Italy", "IT", 60483973, 301340),
-  // createData("United States", "US", 327167434, 9833520),
-  // createData("Canada", "CA", 37602103, 9984670),
-  // createData("Australia", "AU", 25475400, 7692024),
-  // createData("Germany", "DE", 83019200, 357578),
-  // createData("Ireland", "IE", 4857000, 70273),
-  // createData("Mexico", "MX", 126577691, 1972550),
-  // createData("Japan", "JP", 126317000, 377973),
-  // createData("France", "FR", 67022000, 640679),
-  // createData("United Kingdom", "GB", 67545757, 242495),
-  // createData("Russia", "RU", 146793744, 17098246),
-  // createData("Nigeria", "NG", 200962417, 923768),
-  // createData("Brazil", "BR", 210147125, 8515767),
-  {
-    name: "test",
-    code: "test",
-    population: "test",
-    size: "test",
-    timeElapsed: "test",
-  },
-];
-
-const RoomContent = ({ addRoom, rooms, userId, requested }) => {
+const RoomContent = ({ joinRoom, rooms, userId, requested }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [room, setRoom] = React.useState({
-    data: [
-      {
-        name: "test",
-        description: "asd",
-        owner: "test",
-        size: "test",
-        timeElapsed: "test",
-        button: (
-          <Button color="primary" size="large" variant="contained">
-            Join
-          </Button>
-        ),
-      },
-    ],
-  });
+  const [currentTime, setCurrentTime] = React.useState(moment());
 
-  console.log(room.data);
+  // useEffect(() => {
+  //   let interval = setInterval(() => {
+  //     setCurrentTime(moment());
+  //   }, 1800000);
+
+  //   return () => {
+  //     clearInterval(interval)
+  //   }
+  // }, []);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -204,33 +133,42 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
     setPage(0);
   };
 
+  const fetchData = () => {
+    console.log(rooms);
+
+    let fetchedData = {
+      data: Object.values(rooms),
+    };
+
+    let newData = fetchedData.data.map((room) => {
+      return {
+        ...room,
+        button: (
+          <Link to={`/rooms/${room.room_owner}`}>
+          
+          <Button
+            className={classes.joinBtn}
+            onClick={() => joinRoom(room.id)}
+            color={"primary"}
+            variant={"contained"}
+          >
+            JOIN
+          </Button>
+          </Link>
+        ),
+        timeElapsed: currentTime.from(room.timeElapsed, true),
+      };
+    });
+
+    return newData;
+  };
+
   const tableBody = () => {
     if (requested && rooms) {
-      let testing = {
-        data: Object.values(rooms),
-      };
-
-      let newData = testing.data.map((room) => {
-        return {
-          ...room,
-          button: (
-            <Button
-            className={classes.joinBtn}
-              onClick={() => console.log(room.room_name)}
-              color={"primary"}
-              variant={"contained"}
-            >
-              JOIN
-            </Button>
-          ),
-        };
-      });
-
-      console.log(newData);
-      console.log(testing.data);
+      console.log(fetchData());
       return (
         <TableBody>
-          {newData
+          {fetchData()
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => {
               return (
@@ -243,7 +181,6 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
                 >
                   {columns.map((column) => {
                     const value = row[column.id];
-                    console.log(value);
                     return (
                       <TableCell
                         className={classes.tableBody}
@@ -266,8 +203,11 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
 
   const createRoomButton = () => {
     if (requested && rooms) {
-      if (rooms[userId]) {
+      console.log(rooms.userId);
+      if (rooms.hasOwnProperty(userId)) {
         return null;
+      } else {
+        return <CreateRoomForm />;
       }
     } else {
       return <CreateRoomForm />;
@@ -302,7 +242,7 @@ const RoomContent = ({ addRoom, rooms, userId, requested }) => {
           className={classes.tableFooter}
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={room.data.length}
+          count={requested && rooms ? fetchData().length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -322,14 +262,13 @@ const mapStateToProps = ({ firestore, firebase }) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     addRoom: (roomName, roomDescription, roomSize) =>
-//       dispatch(addRoom(roomName, roomDescription, roomSize)),
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    joinRoom: (roomOwner) => dispatch(joinRoom(roomOwner)),
+  };
+};
 
 export default compose(
-  connect(mapStateToProps, null),
-  firestoreConnect((props) => ["rooms"])
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect((props) => [{ collection: "rooms" }])
 )(RoomContent);

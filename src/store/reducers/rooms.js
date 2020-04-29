@@ -33,6 +33,29 @@ const addRoomFail = (state, payload) => {
   };
 };
 
+const joinRoomStart = (state) => {
+  return {
+    ...state,
+    loading: true,
+  };
+};
+
+const joinRoomSuccess = (state) => {
+  return {
+    ...state,
+    loading: false,
+    error: false,
+  };
+};
+
+const joinRoomFail = (state, payload) => {
+  return {
+    ...state,
+    loading: false,
+    error: payload,
+  };
+};
+
 // INITIAL STATE CHANGE MECHANISM
 export default (state = initialState, { type, payload }) => {
   switch (type) {
@@ -44,6 +67,15 @@ export default (state = initialState, { type, payload }) => {
 
     case actions.ADD_ROOM_FAIL:
       return addRoomFail(state, payload);
+
+    case actions.JOIN_ROOM_START:
+      return joinRoomStart(state);
+
+    case actions.JOIN_ROOM_SUCCESS:
+      return joinRoomSuccess(state);
+
+    case actions.JOIN_ROOM_FAIL:
+      return joinRoomFail(state, payload);
 
     default:
       return state;

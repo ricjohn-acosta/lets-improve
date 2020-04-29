@@ -55,6 +55,7 @@ const verifyEmailFail = (state, payload) => {
   };
 };
 
+
 // INITIAL STATE CHANGE MECHANISM
 export default (state = initialState, { type, payload }) => {
   switch (type) {
